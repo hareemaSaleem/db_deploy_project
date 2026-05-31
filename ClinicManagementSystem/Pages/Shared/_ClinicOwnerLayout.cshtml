@@ -1,0 +1,535 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MediCore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        }
+        
+        /* Light Mode (Default) */
+        body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #e8f0fe;
+        min-height: 100vh;
+        transition: all 0.3s ease;
+        }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+        background: #1a1a2e;
+        }
+        
+        body.dark-mode .sidebar {
+        background: #0f3460;
+        }
+        
+        body.dark-mode .top-bar {
+        background: #16213e;
+        color: #ffffff;
+        }
+        
+        body.dark-mode .top-bar .welcome-text h1 {
+        color: #3b82f6;
+        }
+        
+        body.dark-mode .top-bar .welcome-text p {
+        color: #a0aec0;
+        }
+        
+        body.dark-mode .date-time {
+        background: #0f3460;
+        color: #3b82f6;
+        }
+        
+        body.dark-mode .card,
+        body.dark-mode .form-card,
+        body.dark-mode .stat-card {
+        background: #16213e;
+        color: #ffffff;
+        border-color: #0f3460;
+        }
+        
+        body.dark-mode .card-header {
+        background: #0f3460;
+        }
+        
+        body.dark-mode .card-header h3 {
+        color: #ffffff;
+        }
+        
+        body.dark-mode .form-group label {
+        color: #a0aec0;
+        }
+        
+        body.dark-mode input,
+        body.dark-mode select,
+        body.dark-mode textarea {
+        background: #0f3460;
+        color: #ffffff;
+        border-color: #1a56db;
+        }
+        
+        body.dark-mode input:focus,
+        body.dark-mode select:focus,
+        body.dark-mode textarea:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+        }
+        
+        body.dark-mode .stat-number {
+        color: #3b82f6;
+        }
+        
+        body.dark-mode .stat-label {
+        color: #a0aec0;
+        }
+        
+        body.dark-mode .preference-row {
+        border-bottom-color: #0f3460;
+        }
+        
+        body.dark-mode .preference-label {
+        color: #ffffff;
+        }
+        
+        body.dark-mode .doctor-name,
+        body.dark-mode .doctor-specialty {
+        color: #ffffff;
+        }
+        
+        body.dark-mode .staff-avatar,
+        body.dark-mode .doctor-avatar {
+        background: #0f3460;
+        }
+        
+        body.dark-mode .staff-table td,
+        body.dark-mode .doctor-table td,
+        body.dark-mode .payment-table td,
+        body.dark-mode .pending-table td {
+        border-bottom-color: #0f3460;
+        }
+        
+        body.dark-mode .staff-table th,
+        body.dark-mode .doctor-table th,
+        body.dark-mode .payment-table th,
+        body.dark-mode .pending-table th {
+        background: #0f3460;
+        color: #a0aec0;
+        }
+        
+        body.dark-mode .alert-success {
+        background: #0f3460;
+        color: #27ae60;
+        }
+        
+        body.dark-mode .alert-error {
+        background: #0f3460;
+        color: #e53e3e;
+        }
+        
+        body.dark-mode .footer {
+        background: #16213e;
+        color: #a0aec0;
+        }
+        
+        .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+        }
+        
+        .sidebar {
+        width: 280px;
+        background: #1a56db;
+        color: white;
+        position: fixed;
+        height: 100vh;
+        overflow-y: auto;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        }
+        
+        .sidebar-header {
+        padding: 25px 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .sidebar-header h2 {
+        font-size: 24px;
+        margin-bottom: 5px;
+        }
+        
+        .sidebar-header h2 span {
+        font-weight: 300;
+        }
+        
+        .sidebar-header p {
+        font-size: 12px;
+        opacity: 0.8;
+        }
+        
+        .admin-info {
+        padding: 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        }
+        
+        .admin-avatar {
+        width: 45px;
+        height: 45px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+        
+        .admin-avatar i {
+        font-size: 24px;
+        }
+        
+        .admin-details h4 {
+        font-size: 14px;
+        margin-bottom: 3px;
+        }
+        
+        .admin-details p {
+        font-size: 11px;
+        opacity: 0.7;
+        }
+        
+        .sidebar-menu {
+        padding: 20px 0;
+        }
+        
+        .menu-section {
+        margin-bottom: 25px;
+        }
+        
+        .menu-title {
+        padding: 10px 20px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.6;
+        }
+        
+        .menu-item {
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        }
+        
+        .menu-item:hover {
+        background: rgba(255,255,255,0.1);
+        }
+        
+        .menu-item i {
+        width: 20px;
+        font-size: 14px;
+        }
+        
+        .menu-item.active {
+        background: rgba(255,255,255,0.2);
+        border-left: 3px solid white;
+        }
+        
+        .main-content {
+        flex: 1;
+        margin-left: 280px;
+        padding: 20px 30px;
+        min-height: 100vh;
+        }
+        
+        .top-bar {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        }
+        
+        .welcome-text h1 {
+        font-size: 24px;
+        color: #1a56db;
+        margin-bottom: 5px;
+        }
+        
+        .welcome-text p {
+        color: #6c757d;
+        font-size: 14px;
+        }
+        
+        .date-time {
+        background: #e8f0fe;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1a56db;
+        }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+        background: #e8f0fe;
+        border: none;
+        border-radius: 20px;
+        padding: 6px 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: #1a56db;
+        transition: all 0.3s;
+        }
+        
+        .theme-toggle:hover {
+        background: #1a56db;
+        color: white;
+        }
+        
+        body.dark-mode .theme-toggle {
+        background: #0f3460;
+        color: #3b82f6;
+        }
+        
+        body.dark-mode .theme-toggle:hover {
+        background: #3b82f6;
+        color: white;
+        }
+        
+        .logout-btn {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        margin: 0 20px;
+        padding: 12px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 8px;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+        background: #e53e3e;
+        }
+        
+        @@media (max-width: 768px) {
+        .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 1000;
+        }
+
+        .main-content {
+        margin-left: 0;
+        }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Medi<span style="font-weight:300;">Core</span></h2>
+                <p>Smart Clinic Management</p>
+            </div>
+
+            <div class="admin-info">
+                <div class="admin-avatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="admin-details">
+                    <h4>Admin User</h4>
+                    <p>Clinic Administrator</p>
+                </div>
+            </div>
+
+            <div class="sidebar-menu">
+                <div class="menu-section">
+                    <div class="menu-title">NAVIGATION</div>
+                    <a href="/ClinicOwner/ClinicOwnerDashboard" class="menu-item">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/ClinicOwner/RegisterDoctor" class="menu-item">
+                        <i class="fas fa-user-md"></i>
+                        <span>Doctor Management</span>
+                    </a>
+                    <a href="/ClinicOwner/RegisterStaff" class="menu-item">
+                        <i class="fas fa-users"></i>
+                        <span>Staff Management</span>
+                    </a>
+                    <a href="/ClinicOwner/Payments" class="menu-item">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Payments</span>
+                    </a>
+                    <a href="/ClinicOwner/Reports" class="menu-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Reports</span>
+                    </a>
+                    <a href="/ClinicOwner/Settings" class="menu-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </div>
+            <a href="/Shared/Login" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="welcome-text">
+                    <h1>Welcome, Admin</h1>
+                    <p>Manage your clinic efficiently</p>
+                </div>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <button id="themeToggleBtn" class="theme-toggle">
+                        <i id="themeIcon" class="fas fa-moon"></i>
+                        <span id="themeText">Dark Mode</span>
+                    </button>
+                    <div class="date-time" id="dateTime"></div>
+                </div>
+            </div>
+            @RenderBody()
+        </div>
+    </div>
+
+    <script>
+        // Theme functions
+        function setTheme(theme) {
+        const body = document.body;
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+            
+        if (theme === 'Dark') {
+        body.classList.add('dark-mode');
+        themeIcon.className = 'fas fa-sun';
+        themeText.textContent = 'Light Mode';
+        } else {
+        body.classList.remove('dark-mode');
+        themeIcon.className = 'fas fa-moon';
+        themeText.textContent = 'Dark Mode';
+        }
+            
+        // Save to localStorage
+        localStorage.setItem('theme', theme);
+            
+        // Save to cookie for server-side
+        document.cookie = `ThemeMode=${theme}; path=/; expires=${new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString()}`;
+        }
+        
+        function getSavedTheme() {
+        // Check localStorage first
+        let theme = localStorage.getItem('theme');
+        if (theme) return theme;
+            
+        // Check cookie
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith('ThemeMode=')) {
+        return cookie.substring('ThemeMode='.length);
+        }
+        }
+            
+        return 'Light';
+        }
+        
+        // Apply saved theme on page load
+        const savedTheme = getSavedTheme();
+        setTheme(savedTheme);
+        
+        // Theme toggle button
+        document.getElementById('themeToggleBtn').addEventListener('click', function() {
+        const currentTheme = document.body.classList.contains('dark-mode') ? 'Dark' : 'Light';
+        const newTheme = currentTheme === 'Dark' ? 'Light' : 'Dark';
+        setTheme(newTheme);
+            
+        // Optional: Save to server via API
+        fetch('/ClinicOwner/Settings?handler=SetTheme&theme=' + newTheme, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+        }).catch(error => console.log('Theme save error:', error));
+        });
+        // ✅ Sync theme with Settings page
+        function syncThemeFromSettings() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'Dark') {
+        document.body.classList.add('dark-mode');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        if (themeIcon) themeIcon.className = 'fas fa-sun';
+        if (themeText) themeText.textContent = 'Light Mode';
+        } else {
+        document.body.classList.remove('dark-mode');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        if (themeIcon) themeIcon.className = 'fas fa-moon';
+        if (themeText) themeText.textContent = 'Dark Mode';
+        }
+        }
+
+        // Run when page loads
+        syncThemeFromSettings();
+
+        // Listen for storage changes
+        window.addEventListener('storage', function(e) {
+        if (e.key === 'theme') {
+        if (e.newValue === 'Dark') {
+        document.body.classList.add('dark-mode');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        if (themeIcon) themeIcon.className = 'fas fa-sun';
+        if (themeText) themeText.textContent = 'Light Mode';
+        } else {
+        document.body.classList.remove('dark-mode');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        if (themeIcon) themeIcon.className = 'fas fa-moon';
+        if (themeText) themeText.textContent = 'Dark Mode';
+        }
+        }
+        });
+        
+        function updateDateTime() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const dateTimeElement = document.getElementById('dateTime');
+        if (dateTimeElement) {
+        dateTimeElement.innerHTML = now.toLocaleDateString('en-US', options);
+        }
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

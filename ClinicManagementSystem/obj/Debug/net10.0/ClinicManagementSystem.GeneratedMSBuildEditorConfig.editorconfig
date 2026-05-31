@@ -1,0 +1,139 @@
+is_global = true
+build_property.TargetFramework = net10.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v10.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = ClinicManagementSystem
+build_property.RootNamespace = ClinicManagementSystem
+build_property.ProjectDir = E:\Hareema Files\2nd semester\DataBase\DB Final Project (3)\DB Final Project\Git\ClinicManagementSystem\ClinicManagementSystem\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = E:\Hareema Files\2nd semester\DataBase\DB Final Project (3)\DB Final Project\Git\ClinicManagementSystem\ClinicManagementSystem
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 10.0
+build_property.EnableCodeStyleSeverity = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/ClinicOwner/ClinicOwnerDashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpbmljT3duZXJcQ2xpbmljT3duZXJEYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/ClinicOwner/Payments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpbmljT3duZXJcUGF5bWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/ClinicOwner/RegisterDoctor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpbmljT3duZXJcUmVnaXN0ZXJEb2N0b3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/ClinicOwner/RegisterStaff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpbmljT3duZXJcUmVnaXN0ZXJTdGFmZi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/ClinicOwner/Reports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpbmljT3duZXJcUmVwb3J0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/ClinicOwner/Settings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpbmljT3duZXJcU2V0dGluZ3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Doctor/DoctorDashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdG9yXERvY3RvckRhc2hib2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Doctor/FollowUp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdG9yXEZvbGxvd1VwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Doctor/Prescription.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdG9yXFByZXNjcmlwdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Doctor/ViewAppointments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdG9yXFZpZXdBcHBvaW50bWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Public/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVibGljXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Receptionist/Appointments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjZXB0aW9uaXN0XEFwcG9pbnRtZW50cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Receptionist/GenerateBill.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjZXB0aW9uaXN0XEdlbmVyYXRlQmlsbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Receptionist/MedicalRep.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjZXB0aW9uaXN0XE1lZGljYWxSZXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Receptionist/MedicineStock.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjZXB0aW9uaXN0XE1lZGljaW5lU3RvY2suY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Receptionist/PatientDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjZXB0aW9uaXN0XFBhdGllbnREZXRhaWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Receptionist/PatientList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjZXB0aW9uaXN0XFBhdGllbnRMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Receptionist/ReceptionistDashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjZXB0aW9uaXN0XFJlY2VwdGlvbmlzdERhc2hib2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Receptionist/RegisterPatient.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjZXB0aW9uaXN0XFJlZ2lzdGVyUGF0aWVudC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Shared/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXExvZ2luLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Shared/_ClinicOwnerLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9DbGluaWNPd25lckxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Shared/_DoctorLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9Eb2N0b3JMYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Hareema Files/2nd semester/DataBase/DB Final Project (3)/DB Final Project/Git/ClinicManagementSystem/ClinicManagementSystem/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-yydmzob770

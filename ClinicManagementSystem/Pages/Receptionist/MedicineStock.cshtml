@@ -1,0 +1,489 @@
+﻿@page
+@model ClinicManagementSystem.Pages.Receptionist.MedicineStockModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Medicine Management - MediCore";
+}
+<style>
+    .top-bar {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .welcome-text h1 {
+        font-size: 24px;
+        color: #1a56db;
+        margin-bottom: 5px;
+    }
+
+    .welcome-text p {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .date-time {
+        background: #e8f0fe;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1a56db;
+    }
+
+    .two-columns {
+        display: flex;
+        gap: 25px;
+    }
+
+    .left-column {
+        width: 380px;
+        flex-shrink: 0;
+    }
+
+    .right-column {
+        flex: 1;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .form-header {
+        padding: 18px 20px;
+        background: #1a56db;
+        color: white;
+    }
+
+        .form-header h3 {
+            font-size: 16px;
+        }
+
+    .form-body {
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 13px;
+    }
+
+    .required {
+        color: #e53e3e;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1a56db;
+            box-shadow: 0 0 0 2px rgba(26,86,219,0.1);
+        }
+
+    .btn-add {
+        width: 100%;
+        padding: 12px;
+        background: #1a56db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+        .btn-add:hover {
+            background: #0e3fad;
+        }
+
+    .btn-clear {
+        width: 100%;
+        padding: 12px;
+        background: #e8f0fe;
+        color: #2d3748;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .btn-save {
+        width: 100%;
+        padding: 12px;
+        background: #1a56db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+        .btn-save:hover {
+            background: #0e3fad;
+        }
+
+    .btn-cancel {
+        width: 100%;
+        padding: 12px;
+        background: #e8f0fe;
+        color: #2d3748;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+        .btn-cancel:hover {
+            background: #ddd;
+        }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
+    .card-header {
+        padding: 18px 20px;
+        border-bottom: 1px solid #e8f0fe;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .card-header h3 {
+            font-size: 16px;
+            color: #2d3748;
+        }
+
+    .medicine-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .medicine-table th {
+            text-align: left;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .medicine-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e8f0fe;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .medicine-table tr:hover td {
+            background: #e8f0fe;
+        }
+
+    .medicine-name {
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    .medicine-category {
+        font-size: 11px;
+        color: #6c757d;
+    }
+
+    .low-stock {
+        color: #e53e3e;
+        font-weight: 600;
+    }
+
+    .expiry-warning {
+        color: #f39c12;
+        font-weight: 600;
+    }
+</style>
+
+<div class="top-bar">
+    <div class="welcome-text">
+        <h1>Medicine Management</h1>
+        <p>Manage your clinic's medicine inventory</p>
+    </div>
+    <div class="date-time" id="dateTime"></div>
+</div>
+
+<div class="two-columns">
+    <!-- Left Column - Add/Update Medicine Form -->
+    <div class="left-column">
+        <!-- Add Medicine Panel (shown by default) -->
+        <div id="addPanel" class="form-card">
+            <div class="form-header">
+                <h3><i class="fas fa-plus-circle"></i> Add New Medicine</h3>
+            </div>
+            <div class="form-body">
+                <form id="addMedicineForm">
+                    <div class="form-group">
+                        <label>Medicine Name <span class="required">*</span></label>
+                        <input type="text" id="medName" placeholder="Enter medicine name" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Category <span class="required">*</span></label>
+                        <select id="medCategory" required>
+                            <option value="">Select Category</option>
+                            <option>Tablet</option>
+                            <option>Capsule</option>
+                            <option>Syrup</option>
+                            <option>Injection</option>
+                            <option>Ointment</option>
+                            <option>Drops</option>
+                            <option>Inhaler</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Manufacturer <span class="required">*</span></label>
+                        <input type="text" id="medManufacturer" placeholder="Manufacturer name" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Expiry Date <span class="required">*</span></label>
+                        <input type="date" id="medExpiry" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Quantity <span class="required">*</span></label>
+                        <input type="number" id="medStock" placeholder="0" min="0" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Price (PKR) <span class="required">*</span></label>
+                        <input type="number" id="medPrice" placeholder="0.00" min="0" step="0.01" required />
+                    </div>
+                    <button type="submit" class="btn-add">Add Medicine</button>
+                    <button type="button" class="btn-clear" onclick="clearAddForm()">Clear</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Update Medicine Panel (hidden by default) -->
+        <div id="updatePanel" class="form-card" style="display: none;">
+            <div class="form-header">
+                <h3><i class="fas fa-edit"></i> Update Medicine</h3>
+            </div>
+            <div class="form-body">
+                <input type="hidden" id="editMedicineId" />
+                <div class="form-group">
+                    <label>Medicine Name <span class="required">*</span></label>
+                    <input type="text" id="editName" placeholder="Enter medicine name" />
+                </div>
+                <div class="form-group">
+                    <label>Category <span class="required">*</span></label>
+                    <select id="editCategory">
+                        <option>Tablet</option>
+                        <option>Capsule</option>
+                        <option>Syrup</option>
+                        <option>Injection</option>
+                        <option>Ointment</option>
+                        <option>Drops</option>
+                        <option>Inhaler</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Manufacturer <span class="required">*</span></label>
+                    <input type="text" id="editManufacturer" placeholder="Manufacturer name" />
+                </div>
+                <div class="form-group">
+                    <label>Expiry Date <span class="required">*</span></label>
+                    <input type="date" id="editExpiry" />
+                </div>
+                <div class="form-group">
+                    <label>Stock Quantity <span class="required">*</span></label>
+                    <input type="number" id="editStock" min="0" />
+                </div>
+                <div class="form-group">
+                    <label>Price (PKR) <span class="required">*</span></label>
+                    <input type="number" id="editPrice" min="0" step="0.01" />
+                </div>
+                <button class="btn-save" onclick="saveMedicineChanges()">Save Changes</button>
+                <button class="btn-cancel" onclick="cancelUpdate()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column - Medicine List -->
+    <div class="right-column">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-database"></i> Medicine Inventory</h3>
+                <span style="font-size: 12px; color: #6c757d;">Click on any medicine to edit</span>
+            </div>
+            <table class="medicine-table" id="medicineTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Manufacturer</th>
+                        <th>Stock</th>
+                        <th>Price</th>
+                        <th>Expiry</th>
+                    </tr>
+                </thead>
+                <tbody id="medicineListBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    let medicines = @Html.Raw(Json.Serialize(Model.Medicines));
+    let nextId = medicines.length > 0 ? Math.max(...medicines.map(m => m.medicineId)) + 1 : 1;
+
+    function renderTable() {
+        const tbody = document.getElementById('medicineListBody');
+        tbody.innerHTML = '';
+
+        if (!medicines || medicines.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:40px;">No medicines found</td></tr>';
+            return;
+        }
+
+        medicines.forEach(med => {
+            const row = tbody.insertRow();
+            row.style.cursor = 'pointer';
+            row.onclick = () => openUpdatePanel(med);
+
+            row.insertCell(0).innerHTML = `<span style="color:#6c757d;font-size:12px;">M${med.medicineId.toString().padStart(3, '0')}</span>`;
+            row.insertCell(1).innerHTML = `<div class="medicine-name">${med.name}</div><div class="medicine-category">${med.category}</div>`;
+            row.insertCell(2).innerHTML = med.category;
+            row.insertCell(3).innerHTML = med.manufacturer;
+
+            let stockHtml = med.stockQuantity;
+            if (med.stockQuantity < 20) {
+                stockHtml = `<span class="low-stock">⚠️ ${med.stockQuantity} (Low Stock)</span>`;
+            }
+            row.insertCell(4).innerHTML = stockHtml;
+
+            row.insertCell(5).innerHTML = `PKR ${med.price.toFixed(2)}`;
+
+            let expiryHtml = med.expiryDate.split('T')[0];
+            const today = new Date();
+            const expiryDate = new Date(med.expiryDate);
+            const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+            if (daysUntilExpiry < 90 && daysUntilExpiry > 0) {
+                expiryHtml = `<span class="expiry-warning">⚠️ ${expiryHtml}</span>`;
+            } else if (daysUntilExpiry <= 0) {
+                expiryHtml = `<span class="low-stock">EXPIRED</span>`;
+            }
+            row.insertCell(6).innerHTML = expiryHtml;
+        });
+    }
+
+    function showAddPanel() {
+        document.getElementById('addPanel').style.display = 'block';
+        document.getElementById('updatePanel').style.display = 'none';
+    }
+
+    function showUpdatePanel() {
+        document.getElementById('addPanel').style.display = 'none';
+        document.getElementById('updatePanel').style.display = 'block';
+    }
+
+    function openUpdatePanel(medicine) {
+        document.getElementById('editMedicineId').value = medicine.medicineId;
+        document.getElementById('editName').value = medicine.name;
+        document.getElementById('editCategory').value = medicine.category;
+        document.getElementById('editManufacturer').value = medicine.manufacturer;
+        document.getElementById('editExpiry').value = medicine.expiryDate.split('T')[0];
+        document.getElementById('editStock').value = medicine.stockQuantity;
+        document.getElementById('editPrice').value = medicine.price;
+        showUpdatePanel();
+    }
+
+    function cancelUpdate() {
+        showAddPanel();
+        clearAddForm();
+    }
+
+    function saveMedicineChanges() {
+        const id = parseInt(document.getElementById('editMedicineId').value);
+        const index = medicines.findIndex(m => m.medicineId === id);
+
+        if (index !== -1) {
+            medicines[index] = {
+                ...medicines[index],
+                name: document.getElementById('editName').value,
+                category: document.getElementById('editCategory').value,
+                manufacturer: document.getElementById('editManufacturer').value,
+                expiryDate: document.getElementById('editExpiry').value,
+                stockQuantity: parseInt(document.getElementById('editStock').value),
+                price: parseFloat(document.getElementById('editPrice').value)
+            };
+            renderTable();
+            showAddPanel();
+            clearAddForm();
+            alert(`✅ Medicine updated successfully!`);
+        }
+    }
+
+    document.getElementById('addMedicineForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const newMedicine = {
+            medicineId: nextId++,
+            name: document.getElementById('medName').value,
+            category: document.getElementById('medCategory').value,
+            manufacturer: document.getElementById('medManufacturer').value,
+            stockQuantity: parseInt(document.getElementById('medStock').value),
+            price: parseFloat(document.getElementById('medPrice').value),
+            expiryDate: document.getElementById('medExpiry').value
+        };
+
+        medicines.push(newMedicine);
+        renderTable();
+        clearAddForm();
+        alert(`✅ ${newMedicine.name} added successfully!`);
+    });
+
+    function clearAddForm() {
+        document.getElementById('medName').value = '';
+        document.getElementById('medCategory').value = '';
+        document.getElementById('medManufacturer').value = '';
+        document.getElementById('medStock').value = '';
+        document.getElementById('medPrice').value = '';
+        document.getElementById('medExpiry').value = '';
+    }
+
+    function updateDateTime() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('dateTime').innerHTML = now.toLocaleDateString('en-US', options);
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+    showAddPanel();
+    renderTable();
+</script>

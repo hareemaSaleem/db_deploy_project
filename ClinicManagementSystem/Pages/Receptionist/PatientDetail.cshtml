@@ -1,0 +1,250 @@
+﻿@page
+@model ClinicManagementSystem.Pages.Receptionist.PatientDetailModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Patient Details - MediCore";
+}
+
+<style>
+    .breadcrumb {
+        background: white;
+        border-radius: 12px;
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+        .breadcrumb a {
+            color: #1a56db;
+            text-decoration: none;
+        }
+
+    .details-layout {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 25px;
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .profile-header {
+        background: #1a56db;
+        color: white;
+        padding: 25px;
+        text-align: center;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+    }
+
+        .profile-avatar i {
+            font-size: 40px;
+            color: #1a56db;
+        }
+
+    .profile-header h3 {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .profile-info {
+        padding: 20px;
+    }
+
+    .info-row {
+        padding: 10px 0;
+        border-bottom: 1px solid #e8f0fe;
+    }
+
+    .info-label {
+        font-size: 11px;
+        color: #6c757d;
+        margin-bottom: 3px;
+    }
+
+    .info-value {
+        font-size: 14px;
+        font-weight: 500;
+        color: #2d3748;
+    }
+
+    .nav-tabs {
+        display: flex;
+        gap: 5px;
+        background: white;
+        border-radius: 12px;
+        padding: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .tab-btn {
+        flex: 1;
+        padding: 10px;
+        background: #f8f9fa;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+
+        .tab-btn.active {
+            background: #1a56db;
+            color: white;
+        }
+
+    .tab-content {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .info-grid-full {
+        grid-column: span 2;
+    }
+
+    .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a56db;
+        margin: 15px 0 10px 0;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #1a56db;
+    }
+
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+    .error-message {
+        background: #fed7d7;
+        color: #c53030;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #e53e3e;
+    }
+</style>
+
+<div class="breadcrumb">
+    <a href="/Receptionist/PatientList">Patients List</a> > Patient Details
+</div>
+
+@if (Model.Patient == null)
+{
+    <div class="error-message">
+        <i class="fas fa-exclamation-circle"></i> Patient not found.
+    </div>
+}
+else
+{
+    <div class="details-layout">
+        <!-- Left Side - Profile Card -->
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h3>@Model.Patient.Name</h3>
+                <p>CNIC / ID: @Model.Patient.CNIC</p>
+                <p><i class="fas fa-phone"></i> @Model.Patient.Phone</p>
+            </div>
+            <div class="profile-info">
+                <div class="info-row">
+                    <div class="info-label">Full Name</div>
+                    <div class="info-value">@Model.Patient.Name</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Gender</div>
+                    <div class="info-value">@Model.Patient.Gender</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Phone Number</div>
+                    <div class="info-value">@Model.Patient.Phone</div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="nav-tabs">
+                <button class="tab-btn active" onclick="showTab('overview')">OVERVIEW</button>
+                <button class="tab-btn" onclick="showTab('visits')">VISIT HISTORY</button>
+                <button class="tab-btn" onclick="showTab('prescriptions')">PRESCRIPTIONS</button>
+                <button class="tab-btn" onclick="showTab('billing')">BILLING</button>
+            </div>
+            <div id="overview" class="tab-content">
+                <div class="section-title">BASIC INFORMATION</div>
+                <div class="info-grid">
+                    <div><div class="info-label">Full Name</div><div class="info-value">@Model.Patient.Name</div></div>
+                    <div><div class="info-label">CNIC / ID Number</div><div class="info-value">@Model.Patient.CNIC</div></div>
+                    <div><div class="info-label">Date of Birth</div><div class="info-value">@Model.Patient.DateOfBirth.ToString("dd/MM/yyyy")</div></div>
+                    <div><div class="info-label">Age</div><div class="info-value">@Model.Patient.Age Years</div></div>
+                    <div><div class="info-label">Gender</div><div class="info-value">@Model.Patient.Gender</div></div>
+                    <div><div class="info-label">Phone Number</div><div class="info-value">@Model.Patient.Phone</div></div>
+                    <div><div class="info-label">Email</div><div class="info-value">@(string.IsNullOrEmpty(Model.Patient.Email) ? "Not provided" : Model.Patient.Email)</div></div>
+                    <div><div class="info-label">Marital Status</div><div class="info-value">@Model.Patient.MaritalStatus</div></div>
+                </div>
+
+                <div class="section-title">CONTACT INFORMATION</div>
+                <div class="info-grid">
+                    <div><div class="info-label">Phone Number</div><div class="info-value">@Model.Patient.Phone</div></div>
+                    <div><div class="info-label">Email</div><div class="info-value">@(string.IsNullOrEmpty(Model.Patient.Email) ? "Not provided" : Model.Patient.Email)</div></div>
+                    <div class="info-grid-full"><div class="info-label">Address</div><div class="info-value">@Model.Patient.Address</div></div>
+                    <div class="info-grid-full"><div class="info-label">City</div><div class="info-value">@Model.Patient.City</div></div>
+                </div>
+
+                <div class="section-title">ADDITIONAL INFORMATION</div>
+                <div class="info-grid">
+                    <div><div class="info-label">Blood Group</div><div class="info-value">@(string.IsNullOrEmpty(Model.Patient.BloodGroup) ? "Not specified" : Model.Patient.BloodGroup)</div></div>
+                    <div><div class="info-label">Chronic Diseases</div><div class="info-value">@(string.IsNullOrEmpty(Model.Patient.ChronicDiseases) ? "None" : Model.Patient.ChronicDiseases)</div></div>
+                    <div><div class="info-label">Risk Flag</div><div class="info-value">@(Model.Patient.RiskFlag ? "High Risk" : "Normal")</div></div>
+                    <div><div class="info-label">Registered On</div><div class="info-value">@Model.Patient.CreatedAt.ToString("dd MMM yyyy")</div></div>
+                </div>
+            </div>
+            <div id="visits" class="tab-content" style="display:none;">
+                <div class="section-title">VISIT HISTORY</div>
+                <p style="text-align:center; padding:20px;">Coming soon...</p>
+            </div>
+            <div id="prescriptions" class="tab-content" style="display:none;">
+                <div class="section-title">PRESCRIPTIONS</div>
+                <p style="text-align:center; padding:20px;">Coming soon...</p>
+            </div>
+            <div id="billing" class="tab-content" style="display:none;">
+                <div class="section-title">BILLING</div>
+                <p style="text-align:center; padding:20px;">Coming soon...</p>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    function showTab(tabName) {
+        document.getElementById('overview').style.display = 'none';
+        document.getElementById('visits').style.display = 'none';
+        document.getElementById('prescriptions').style.display = 'none';
+        document.getElementById('billing').style.display = 'none';
+        document.getElementById(tabName).style.display = 'block';
+        var btns = document.querySelectorAll('.tab-btn');
+        btns.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+</script>

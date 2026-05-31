@@ -1,0 +1,470 @@
+﻿@page
+@model ClinicManagementSystem.Pages.Receptionist.GenerateBillModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Generate Bill - MediCore";
+}
+
+<style>
+    .top-bar {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .welcome-text h1 {
+        font-size: 24px;
+        color: #1a56db;
+        margin-bottom: 5px;
+    }
+
+    .welcome-text p {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .date-time {
+        background: #e8f0fe;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1a56db;
+    }
+
+    .two-columns {
+        display: flex;
+        gap: 25px;
+    }
+
+    .left-column {
+        width: 400px;
+        flex-shrink: 0;
+    }
+
+    .right-column {
+        flex: 1;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .form-header {
+        padding: 18px 20px;
+        background: #1a56db;
+        color: white;
+    }
+
+        .form-header h3 {
+            font-size: 16px;
+        }
+
+    .form-body {
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 13px;
+    }
+
+    .required {
+        color: #e53e3e;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1a56db;
+            box-shadow: 0 0 0 2px rgba(26,86,219,0.1);
+        }
+
+    .patient-info {
+        background: #e8f0fe;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+        .patient-info h4 {
+            font-size: 14px;
+            color: #1a56db;
+            margin-bottom: 10px;
+        }
+
+        .patient-info p {
+            font-size: 13px;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+    .amount-display {
+        font-size: 18px;
+        font-weight: bold;
+        color: #1a56db;
+        text-align: right;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #e8f0fe;
+    }
+
+    .btn-generate {
+        width: 100%;
+        padding: 12px;
+        background: #1a56db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+        .btn-generate:hover {
+            background: #0e3fad;
+        }
+
+    .search-bar {
+        background: white;
+        border-radius: 12px;
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        gap: 15px;
+        align-items: flex-end;
+        flex-wrap: wrap;
+    }
+
+    .search-group {
+        flex: 1;
+        min-width: 150px;
+    }
+
+        .search-group label {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .search-group input {
+            padding: 8px 12px;
+        }
+
+    .search-btn {
+        padding: 8px 20px;
+        background: #1a56db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
+    .card-header {
+        padding: 18px 20px;
+        border-bottom: 1px solid #e8f0fe;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .card-header h3 {
+            font-size: 16px;
+            color: #2d3748;
+        }
+
+    .bill-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .bill-table th {
+            text-align: left;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 600;
+            border-bottom: 1px solid #e8f0fe;
+        }
+
+        .bill-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e8f0fe;
+            font-size: 13px;
+        }
+
+        .bill-table tr:hover td {
+            background: #f8f9fa;
+        }
+
+    .payment-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .payment-cash {
+        background: #e8fce8;
+        color: #27ae60;
+    }
+
+    .payment-upi {
+        background: #e8f0fe;
+        color: #1a56db;
+    }
+
+    .payment-card {
+        background: #fff3e0;
+        color: #f39c12;
+    }
+
+    .success-message {
+        background: #c6f6d5;
+        color: #276749;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #27ae60;
+    }
+
+    .error-message {
+        background: #fed7d7;
+        color: #c53030;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #e53e3e;
+    }
+</style>
+
+<div class="top-bar">
+    <div class="welcome-text">
+        <h1>Generate Bill</h1>
+        <p>Create and manage patient bills</p>
+    </div>
+    <div class="date-time" id="dateTime"></div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="success-message">
+        <i class="fas fa-check-circle"></i> @Model.SuccessMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="error-message">
+        <i class="fas fa-exclamation-circle"></i> @Model.ErrorMessage
+    </div>
+}
+
+<div class="two-columns">
+    <div class="left-column">
+        <div class="form-card">
+            <div class="form-header">
+                <h3><i class="fas fa-file-invoice"></i> Bill Details</h3>
+            </div>
+            <div class="form-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label>Select Patient <span class="required">*</span></label>
+                        <select asp-for="PatientId" class="form-control" required>
+                            <option value="">-- Select Patient --</option>
+                            @if (Model.Patients != null)
+                            {
+                                foreach (var patient in Model.Patients)
+                                {
+                                    <option value="@patient.PatientId">@patient.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    @if (Model.PatientId > 0)
+                    {
+                        var selectedPatient = Model.Patients?.FirstOrDefault(p => p.PatientId == Model.PatientId);
+                        if (selectedPatient != null)
+                        {
+                            <div class="patient-info">
+                                <h4><i class="fas fa-user"></i> Patient Information</h4>
+                                <p><strong>ID:</strong> @selectedPatient.PatientId</p>
+                                <p><strong>Name:</strong> @selectedPatient.Name</p>
+                                <p><strong>Phone:</strong> @selectedPatient.Phone</p>
+                            </div>
+                        }
+                    }
+
+                    <div class="form-group">
+                        <label>Consultation Fee (PKR)</label>
+                        <input type="number" asp-for="ConsultationFee" class="form-control" step="100" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Medicine Charges (PKR)</label>
+                        <input type="number" asp-for="MedicineCharges" class="form-control" step="100" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Other Charges (PKR)</label>
+                        <input type="number" asp-for="OtherCharges" class="form-control" step="100" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Discount (PKR)</label>
+                        <input type="number" asp-for="Discount" class="form-control" step="100" />
+                    </div>
+
+                    <div class="amount-display">
+                        Total Amount: @Model.TotalAmount.ToString("N2") PKR
+                    </div>
+
+                    <div class="form-group">
+                        <label>Payment Method <span class="required">*</span></label>
+                        <select asp-for="PaymentMethod" class="form-control" required>
+                            <option value="Cash">Cash</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Card">Card</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-generate">
+                        <i class="fas fa-file-invoice"></i> Generate Bill
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="right-column">
+        <div class="search-bar">
+            <div class="search-group">
+                <label><i class="fas fa-search"></i> Search</label>
+                <input type="text" id="searchInput" placeholder="Search by patient, bill ID..." onkeyup="filterBills()" />
+            </div>
+            <div class="search-group">
+                <label>From Date</label>
+                <input type="date" id="fromDate" />
+            </div>
+            <div class="search-group">
+                <label>To Date</label>
+                <input type="date" id="toDate" />
+            </div>
+            <button class="search-btn" onclick="filterBills()"><i class="fas fa-search"></i> Search</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-history"></i> Bill History</h3>
+                <span style="font-size: 12px; color: #6c757d;">Recent bills</span>
+            </div>
+            <table class="bill-table" id="billTable">
+                <thead>
+                    <tr>
+                        <th>Bill ID</th>
+                        <th>Patient Name</th>
+                        <th>Bill Date</th>
+                        <th>Total Amount</th>
+                        <th>Payment Method</th>
+                    </tr>
+                </thead>
+                <tbody id="billTableBody">
+                    @if (Model.Bills != null && Model.Bills.Count > 0)
+                    {
+                        foreach (var bill in Model.Bills.OrderByDescending(b => b.BillingDate).Take(10))
+                        {
+                            string paymentClass = bill.PaymentMethod == "Cash" ? "payment-cash" : (bill.PaymentMethod == "UPI" ? "payment-upi" : "payment-card");
+                            <tr>
+                                <td><span style="font-weight: 600; color: #1a56db;">@bill.BillNumber</span></td>
+                                <td><span style="font-weight: 500;">@(bill.Patient?.Name ?? "N/A")</span></td>
+                                <td>@bill.BillingDate.ToString("yyyy-MM-dd")</td>
+                                <td><span style="font-weight: 600;">PKR @bill.TotalAmount.ToString("N2")</span></td>
+                                <td><span class="payment-badge @paymentClass">@bill.PaymentMethod</span></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function filterBills() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const fromDate = document.getElementById('fromDate').value;
+        const toDate = document.getElementById('toDate').value;
+
+        const rows = document.querySelectorAll('#billTableBody tr');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            let show = true;
+            const billId = row.cells[0]?.innerText.toLowerCase() || '';
+            const patientName = row.cells[1]?.innerText.toLowerCase() || '';
+            const billDate = row.cells[2]?.innerText || '';
+
+            if (searchTerm && !billId.includes(searchTerm) && !patientName.includes(searchTerm)) {
+                show = false;
+            }
+            if (fromDate && billDate < fromDate) {
+                show = false;
+            }
+            if (toDate && billDate > toDate) {
+                show = false;
+            }
+
+            row.style.display = show ? '' : 'none';
+            if (show) visibleCount++;
+        });
+    }
+
+    function setDefaultDates() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('fromDate').value = today;
+        document.getElementById('toDate').value = today;
+    }
+
+    function updateDateTime() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('dateTime').innerHTML = now.toLocaleDateString('en-US', options);
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+    setDefaultDates();
+</script>

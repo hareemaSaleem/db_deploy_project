@@ -1,0 +1,457 @@
+﻿@page
+@model ClinicManagementSystem.Pages.Doctor.PrescriptionModel
+@{
+    Layout = "_DoctorLayout";
+    ViewData["Title"] = "Write Prescription - MediCore";
+}
+
+<style>
+    .top-bar {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .welcome-text h1 {
+        font-size: 24px;
+        color: #1a56db;
+        margin-bottom: 5px;
+    }
+
+    .welcome-text p {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .date-time {
+        background: #e8f0fe;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1a56db;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .form-header {
+        padding: 18px 20px;
+        background: #1a56db;
+        color: white;
+    }
+
+        .form-header h3 {
+            font-size: 16px;
+        }
+
+    .form-body {
+        padding: 25px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 13px;
+    }
+
+    .required {
+        color: #e53e3e;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1a56db;
+            box-shadow: 0 0 0 2px rgba(26,86,219,0.1);
+        }
+
+    textarea {
+        resize: vertical;
+        min-height: 60px;
+    }
+
+    .warning-message {
+        background: #fff3e0;
+        border-left: 4px solid #f39c12;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        display: none;
+    }
+
+        .warning-message i {
+            color: #f39c12;
+            margin-right: 10px;
+        }
+
+        .warning-message span {
+            font-size: 13px;
+            color: #2d3748;
+        }
+
+    .medicine-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+        .medicine-row .med-name {
+            flex: 2;
+            min-width: 150px;
+        }
+
+        .medicine-row .med-dosage {
+            width: 100px;
+        }
+
+        .medicine-row .med-duration {
+            width: 80px;
+        }
+
+        .medicine-row .remove-medicine {
+            background: none;
+            border: none;
+            color: #e53e3e;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 8px;
+        }
+
+    .add-medicine-btn {
+        background: none;
+        border: 1px solid #1a56db;
+        color: #1a56db;
+        padding: 8px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+        margin-top: 10px;
+    }
+
+        .add-medicine-btn:hover {
+            background: #1a56db;
+            color: white;
+        }
+
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background: #1a56db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+        .btn-submit:hover {
+            background: #0e3fad;
+        }
+
+    .prescription-history {
+        margin-top: 10px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .prescription-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .prescription-table th {
+            text-align: left;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 600;
+            border-bottom: 1px solid #e8f0fe;
+            position: sticky;
+            top: 0;
+        }
+
+        .prescription-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e8f0fe;
+            font-size: 13px;
+        }
+
+        .prescription-table tr:hover td {
+            background: #f8f9fa;
+        }
+
+    .medicines-list {
+        font-size: 11px;
+        color: #6c757d;
+        max-width: 300px;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 30px;
+        color: #6c757d;
+    }
+</style>
+
+@if (!string.IsNullOrEmpty(Model.InfoMessage))
+{
+    <div style="background: #e8f0fe; border-left: 4px solid #1a56db; padding: 12px 15px; margin-bottom: 20px; border-radius: 8px;">
+        <i class="fas fa-info-circle" style="color: #1a56db; margin-right: 10px;"></i>
+        <span style="font-size: 13px; color: #2d3748;">@Model.InfoMessage</span>
+    </div>
+}
+
+<div class="top-bar">
+    <div class="welcome-text">
+        <h1>Write Prescription</h1>
+        <p>Create new prescription for patient</p>
+    </div>
+    <div class="date-time" id="dateTime"></div>
+</div>
+
+<div class="form-card">
+    <div class="form-header">
+        <h3><i class="fas fa-prescription"></i> New Prescription</h3>
+    </div>
+    <div class="form-body">
+        <form method="post" id="prescriptionForm">
+            <div id="warningMessage" class="warning-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="warningText"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Select Patient <span class="required">*</span></label>
+                    <select id="patientSelect" name="PatientId" asp-for="PatientId" onchange="onPatientChange()" required>
+                        <option value="">-- Select Patient --</option>
+                        @if (Model.Patients != null)
+                        {
+                            @foreach (var patient in Model.Patients)
+                            {
+                                <option value="@patient.PatientId">@patient.Name (ID: @patient.PatientId, Age: @patient.Age)</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Visit Date <span class="required">*</span></label>
+                    <input type="date" id="visitDate" name="VisitDate" asp-for="VisitDate" required />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Diagnosis / Disease <span class="required">*</span></label>
+                    <input type="text" id="diagnosis" name="Diagnosis" asp-for="Diagnosis" placeholder="Enter diagnosis" required />
+                </div>
+                <div class="form-group">
+                    <label>Follow Up Date</label>
+                    <input type="date" id="followUpDate" name="FollowUpDate" asp-for="FollowUpDate" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Symptoms</label>
+                <textarea id="symptoms" name="Symptoms" asp-for="Symptoms" placeholder="Enter symptoms (comma separated)"></textarea>
+            </div>
+
+            <label>Medicines Prescribed <span class="required">*</span></label>
+            <div id="medicinesContainer">
+                <div class="medicine-row" id="medicineRow1">
+                    <input type="text" class="med-name" name="MedicinesList[0].MedicineName" placeholder="Medicine name" onkeyup="checkRepeatMedicine(this)" />
+                    <input type="text" class="med-dosage" name="MedicinesList[0].Dosage" placeholder="Dosage" />
+                    <input type="text" class="med-duration" name="MedicinesList[0].Duration" placeholder="Days" />
+                    <button type="button" class="remove-medicine" onclick="removeMedicineRow(this)"><i class="fas fa-times-circle"></i></button>
+                </div>
+            </div>
+            <button type="button" class="add-medicine-btn" onclick="addMedicineRow()">
+                <i class="fas fa-plus"></i> Add Another Medicine
+            </button>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Additional Notes</label>
+                <textarea id="notes" name="Notes" asp-for="Notes" placeholder="Any additional instructions for patient..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">Save Prescription</button>
+        </form>
+    </div>
+</div>
+
+<div class="form-card">
+    <div class="form-header">
+        <h3><i class="fas fa-history"></i> Previous Prescriptions</h3>
+    </div>
+    <div class="prescription-history" id="prescriptionHistory">
+        <div id="noPrescriptionMsg" class="no-data">Select a patient to view previous prescriptions</div>
+        <table id="prescriptionsTable" class="prescription-table" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Diagnosis</th>
+                    <th>Medicines Prescribed</th>
+                    <th>Follow Up Date</th>
+                </tr>
+            </thead>
+            <tbody id="prescriptionsBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    let medicineCounter = 1;
+
+    function onPatientChange() {
+        const patientId = document.getElementById('patientSelect').value;
+        if (!patientId) {
+            document.getElementById('prescriptionsTable').style.display = 'none';
+            document.getElementById('noPrescriptionMsg').style.display = 'block';
+            document.getElementById('noPrescriptionMsg').innerHTML = 'Select a patient to view previous prescriptions';
+            return;
+        }
+        fetch(`/Doctor/Prescription?handler=PatientPrescriptions&patientId=${patientId}`)
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('prescriptionsBody');
+                const table = document.getElementById('prescriptionsTable');
+                const noMsg = document.getElementById('noPrescriptionMsg');
+
+                if (!data || data.length === 0) {
+                    table.style.display = 'none';
+                    noMsg.style.display = 'block';
+                    noMsg.innerHTML = 'No previous prescriptions found for this patient';
+                    return;
+                }
+
+                table.style.display = 'table';
+                noMsg.style.display = 'none';
+                tbody.innerHTML = '';
+
+                data.forEach(pres => {
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                        <td>${pres.visitDate}</td>
+                        <td>${pres.diagnosis}</td>
+                        <td><div class="medicines-list">${pres.medicines}</div></td>
+                        <td>${pres.followUpDate}</td>
+                    `;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching prescriptions:', error);
+            });
+
+        document.getElementById('warningMessage').style.display = 'none';
+        resetMedicineRows();
+    }
+
+    function checkRepeatMedicine(inputElement) {
+        const medicineName = inputElement.value.trim();
+        const patientId = document.getElementById('patientSelect').value;
+        
+        if (!patientId || !medicineName) return;
+
+        fetch(`/Doctor/Prescription?handler=CheckRepeatMedicine&patientId=${patientId}&medicineName=${encodeURIComponent(medicineName)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.isRepeated) {
+                    const warningDiv = document.getElementById('warningMessage');
+                    const warningText = document.getElementById('warningText');
+                    warningText.innerHTML = `⚠️ Medicine "${medicineName}" has been prescribed ${data.count} times before for this patient. Consider changing treatment if not effective.`;
+                    warningDiv.style.display = 'block';
+                } else {
+                    document.getElementById('warningMessage').style.display = 'none';
+                }
+            });
+    }
+
+    function resetMedicineRows() {
+        const container = document.getElementById('medicinesContainer');
+        while (container.children.length > 1) {
+            container.removeChild(container.lastChild);
+        }
+        const firstRow = container.children[0];
+        firstRow.querySelector('.med-name').value = '';
+        firstRow.querySelector('.med-dosage').value = '';
+        firstRow.querySelector('.med-duration').value = '';
+        medicineCounter = 1;
+    }
+
+    function addMedicineRow() {
+        medicineCounter++;
+        const container = document.getElementById('medicinesContainer');
+        const newRow = document.createElement('div');
+        newRow.className = 'medicine-row';
+        newRow.id = `medicineRow${medicineCounter}`;
+        newRow.innerHTML = `
+            <input type="text" class="med-name" name="MedicinesList[${medicineCounter - 1}].MedicineName" placeholder="Medicine name" onkeyup="checkRepeatMedicine(this)" />
+            <input type="text" class="med-dosage" name="MedicinesList[${medicineCounter - 1}].Dosage" placeholder="Dosage" />
+            <input type="text" class="med-duration" name="MedicinesList[${medicineCounter - 1}].Duration" placeholder="Days" />
+            <button type="button" class="remove-medicine" onclick="removeMedicineRow(this)"><i class="fas fa-times-circle"></i></button>
+        `;
+        container.appendChild(newRow);
+    }
+
+    function removeMedicineRow(button) {
+        const row = button.closest('.medicine-row');
+        if (document.querySelectorAll('.medicine-row').length > 1) {
+            row.remove();
+        } else {
+            alert("At least one medicine is required");
+        }
+    }
+
+    function setDefaultDates() {
+        const today = new Date().toISOString().split('T')[0];
+        if (!document.getElementById('visitDate').value) {
+            document.getElementById('visitDate').value = today;
+        }
+    }
+
+    function updateDateTime() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('dateTime').innerHTML = now.toLocaleDateString('en-US', options);
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+    setDefaultDates();
+</script>

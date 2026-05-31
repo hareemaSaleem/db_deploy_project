@@ -1,0 +1,516 @@
+﻿@page
+@model ClinicManagementSystem.Pages.ClinicOwner.PaymentsModel
+@{
+    Layout = "_ClinicOwnerLayout";
+    ViewData["Title"] = "Payments - MediCore";
+}
+
+<style>
+    .top-bar {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .welcome-text h1 {
+        font-size: 24px;
+        color: #1a56db;
+        margin-bottom: 5px;
+    }
+
+    .welcome-text p {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .date-time {
+        background: #e8f0fe;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1a56db;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .stat-number {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1a56db;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        color: #6c757d;
+        font-size: 13px;
+    }
+
+    .two-columns {
+        display: flex;
+        gap: 25px;
+    }
+
+    .left-column {
+        width: 400px;
+        flex-shrink: 0;
+    }
+
+    .right-column {
+        flex: 1;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .form-header {
+        padding: 18px 20px;
+        background: #1a56db;
+        color: white;
+    }
+
+    .form-header h3 {
+        font-size: 16px;
+    }
+
+    .form-body {
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 12px;
+    }
+
+    .required {
+        color: #e53e3e;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 13px;
+        transition: all 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: #1a56db;
+        box-shadow: 0 0 0 2px rgba(26,86,219,0.1);
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .btn-submit {
+        flex: 1;
+        padding: 10px;
+        background: #1a56db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .btn-cancel {
+        flex: 1;
+        padding: 10px;
+        background: #e8f0fe;
+        color: #2d3748;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
+    .card-header {
+        padding: 15px 20px;
+        border-bottom: 1px solid #e8f0fe;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .card-header h3 {
+        font-size: 16px;
+        color: #2d3748;
+    }
+
+    .search-filter {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .search-filter input {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        width: 250px;
+    }
+
+    .search-filter button {
+        padding: 8px 15px;
+        background: #1a56db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .payment-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .payment-table th {
+        text-align: left;
+        padding: 12px 10px;
+        background: #f8f9fa;
+        font-size: 11px;
+        color: #6c757d;
+        font-weight: 600;
+        border-bottom: 1px solid #e8f0fe;
+    }
+
+    .payment-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #e8f0fe;
+        font-size: 12px;
+    }
+
+    .payment-table tr:hover td {
+        background: #f8f9fa;
+    }
+
+    .status-paid {
+        background: #e8fce8;
+        color: #27ae60;
+        padding: 3px 8px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .table-footer {
+        padding: 12px 20px;
+        border-top: 1px solid #e8f0fe;
+        text-align: center;
+        font-size: 12px;
+        color: #6c757d;
+    }
+
+    .alert-success {
+        background: #e8fce8;
+        border-left: 4px solid #27ae60;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        color: #27ae60;
+    }
+
+    .alert-error {
+        background: #fee2e2;
+        border-left: 4px solid #e53e3e;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        color: #e53e3e;
+    }
+
+    .recipient-select {
+        display: none;
+    }
+</style>
+
+<div class="top-bar">
+    <div class="welcome-text">
+        <h1>Payments</h1>
+        <p>Record and manage all clinic payments</p>
+    </div>
+    <div class="date-time" id="dateTime"></div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert-success">
+        <i class="fas fa-check-circle"></i> @Model.SuccessMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert-error">
+        <i class="fas fa-exclamation-circle"></i> @Model.ErrorMessage
+    </div>
+}
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">Rs. @Model.TotalPaymentsThisMonth.ToString("N0")</div>
+        <div class="stat-label">Total Payments (This Month)</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">@Model.TotalPaymentsCount</div>
+        <div class="stat-label">Total Payments</div>
+    </div>
+</div>
+
+<div class="two-columns">
+    <div class="left-column">
+        <div class="form-card">
+            <div class="form-header">
+                <h3><i class="fas fa-plus-circle"></i> Add New Payment</h3>
+            </div>
+            <div class="form-body">
+                <form method="post" asp-page-handler="AddPayment">
+                    <input type="hidden" id="recipientIdHidden" name="RecipientId" asp-for="RecipientId" />
+                    <div class="form-group">
+                        <label>Paid To <span class="required">*</span></label>
+                        <select id="paidToType" name="PaidToType" asp-for="PaidToType" onchange="updateRecipientList()" required>
+                            <option value="">Select type</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="staff">Staff</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="doctorSelectGroup" style="display: none;">
+                        <label>Select Doctor <span class="required">*</span></label>
+                        <select id="doctorSelect">
+                            <option value="">Select doctor</option>
+                            @if (Model.DoctorsList != null)
+                            {
+                                @foreach (var doctor in Model.DoctorsList)
+                                {
+                                    <option value="@doctor.DoctorId">@doctor.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="staffSelectGroup" style="display: none;">
+                        <label>Select Staff <span class="required">*</span></label>
+                        <select id="staffSelect">
+                            <option value="">Select staff</option>
+                            @if (Model.StaffList != null)
+                            {
+                                @foreach (var staff in Model.StaffList)
+                                {
+                                    <option value="@staff.ReceptionistId">@staff.FirstName @staff.LastName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount (Rs.) <span class="required">*</span></label>
+                        <input type="number" id="amount" name="Amount" asp-for="Amount" placeholder="Enter amount" min="0" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Bonus (Rs.)</label>
+                        <input type="number" id="bonus" name="Bonus" asp-for="Bonus" placeholder="Enter bonus amount" min="0" value="0" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Payment Method <span class="required">*</span></label>
+                        <select id="paymentMethod" name="PaymentMethod" asp-for="PaymentMethod" required>
+                            <option value="">Select method</option>
+                            <option>Cash</option>
+                            <option>Bank Transfer</option>
+                            <option>Credit Card</option>
+                            <option>Easypaisa</option>
+                            <option>JazzCash</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Notes (Optional)</label>
+                        <textarea id="notes" name="Notes" asp-for="Notes" rows="2" placeholder="Enter notes (optional)"></textarea>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn-cancel" onclick="clearForm()">Cancel</button>
+                        <button type="submit" class="btn-submit">Add Payment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-list"></i> Payments List</h3>
+                <div class="search-filter">
+                    <input type="text" id="searchInput" placeholder="Search by name or paid to..." onkeyup="searchPayments()" />
+                    <button onclick="searchPayments()"><i class="fas fa-search"></i> Search</button>
+                </div>
+            </div>
+            <table class="payment-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Paid To</th>
+                        <th>Name</th>
+                        <th>Method</th>
+                        <th>Amount (Rs.)</th>
+                        <th>Bonus (Rs.)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentsBody">
+                    @if (Model.PaymentsList != null && Model.PaymentsList.Any())
+                    {
+                        @foreach (dynamic payment in Model.PaymentsList)
+                        {
+                            <tr>
+                                <td>@payment.Date.ToString("dd MMM yyyy")</td>
+                                <td>@payment.PaidTo</td>
+                                <td>@payment.Name</td>
+                                <td>@payment.Method</td>
+                                <td>@payment.Amount.ToString("N0")</td>
+                                <td>@payment.Bonus.ToString("N0")</td>
+                                <td><span class="status-paid">@payment.Status</span></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" style="text-align:center; padding:30px;">No payments found</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="table-footer">
+                Showing @(Model.PaymentsList?.Count ?? 0) payments
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        function updateRecipientList() {
+        const type = document.getElementById('paidToType').value;
+        const doctorGroup = document.getElementById('doctorSelectGroup');
+        const staffGroup = document.getElementById('staffSelectGroup');
+        const hiddenInput = document.getElementById('recipientIdHidden');
+    
+        doctorGroup.style.display = 'none';
+        staffGroup.style.display = 'none';
+    
+        if (type === 'doctor') {
+            doctorGroup.style.display = 'block';
+            document.getElementById('doctorSelect').onchange = function() {
+                hiddenInput.value = this.value;
+            };
+        } else if (type === 'staff') {
+            staffGroup.style.display = 'block';
+            document.getElementById('staffSelect').onchange = function() {
+                hiddenInput.value = this.value;
+            };
+        } else {
+            hiddenInput.value = '';
+        }
+    }
+    
+        function searchPayments() {
+        const searchTerm = document.getElementById('searchInput').value;
+    
+        fetch(`/ClinicOwner/Payments?handler=SearchPayments&searchTerm=${encodeURIComponent(searchTerm)}`)
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('paymentsBody');
+                tbody.innerHTML = '';
+            
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px;">No payments found</td></tr>';
+                    return;
+                }
+            
+                data.forEach(payment => {
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                        <td>${new Date(payment.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</td>
+                        <td>${payment.paidTo}</td>
+                        <td>${payment.name}</td>
+                        <td>${payment.method}</td>
+                        <td>${payment.amount.toLocaleString()}</td>
+                        <td>${payment.bonus.toLocaleString()}</td>
+                        <td><span class="status-paid">${payment.status}</span></td>
+                    `;
+                });
+            })
+            .catch(error => {
+                console.error('Error searching payments:', error);
+            });
+    }
+    
+        function clearForm() {
+        document.getElementById('paidToType').value = '';
+        document.getElementById('doctorSelectGroup').style.display = 'none';
+        document.getElementById('staffSelectGroup').style.display = 'none';
+        document.getElementById('doctorSelect').value = '';
+        document.getElementById('staffSelect').value = '';
+        document.getElementById('recipientIdHidden').value = '';
+        document.getElementById('amount').value = '';
+        document.getElementById('bonus').value = '0';
+        document.getElementById('paymentMethod').value = '';
+        document.getElementById('notes').value = '';
+    }
+    
+    function updateDateTime() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('dateTime').innerHTML = now.toLocaleDateString('en-US', options);
+    }
+    
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+</script>

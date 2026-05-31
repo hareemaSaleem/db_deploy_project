@@ -1,0 +1,20 @@
+﻿@{
+    var page = ViewContext.RouteData.Values["page"]?.ToString();
+
+    if (page != null && page.StartsWith("/Doctor/"))
+    {
+        Layout = "_DoctorLayout";
+    }
+    else if (page != null && page.StartsWith("/Receptionist/"))
+    {
+        Layout = "_Layout";
+    }
+    else if (page != null && page.StartsWith("/ClinicOwner/"))
+    {
+        Layout = "_ClinicOwnerLayout";
+    }
+    else
+    {
+        Layout = "_Layout";
+    }
+}

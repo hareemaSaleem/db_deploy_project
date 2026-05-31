@@ -1,0 +1,716 @@
+﻿@page
+@model ClinicManagementSystem.Pages.Receptionist.AppointmentsModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Appointment Calendar - MediCore";
+}
+
+<style>
+    .top-bar {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .welcome-text h1 {
+        font-size: 24px;
+        color: #1a56db;
+        margin-bottom: 5px;
+    }
+
+    .welcome-text p {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .date-time {
+        background: #e8f0fe;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1a56db;
+    }
+
+    .calendar-container {
+        display: flex;
+        gap: 25px;
+    }
+
+    .left-panel {
+        flex: 1;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
+    .right-panel {
+        width: 320px;
+        flex-shrink: 0;
+    }
+
+    .doctor-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .doctor-avatar {
+        width: 60px;
+        height: 60px;
+        background: #1a56db;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+        .doctor-avatar i {
+            font-size: 30px;
+            color: white;
+        }
+
+    .doctor-card h3 {
+        font-size: 18px;
+        color: #2d3748;
+        margin-bottom: 5px;
+    }
+
+    .doctor-card p {
+        font-size: 13px;
+        color: #6c757d;
+        margin-bottom: 15px;
+    }
+
+    .schedule-time {
+        background: #e8f0fe;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1a56db;
+    }
+
+    .stats-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .stat-box {
+        flex: 1;
+        background: white;
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .stat-number {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1a56db;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: #6c757d;
+    }
+
+    .calendar-header {
+        padding: 20px;
+        border-bottom: 1px solid #e8f0fe;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .calendar-header h3 {
+            font-size: 16px;
+            color: #2d3748;
+        }
+
+    .nav-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .nav-btn {
+        padding: 8px 12px;
+        background: #e8f0fe;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #1a56db;
+    }
+
+        .nav-btn:hover {
+            background: #1a56db;
+            color: white;
+        }
+
+    .schedule-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .schedule-table th {
+            text-align: left;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 600;
+            border-bottom: 1px solid #e8f0fe;
+        }
+
+        .schedule-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e8f0fe;
+            font-size: 13px;
+        }
+
+    .time-slot {
+        font-weight: 600;
+        color: #2d3748;
+        width: 100px;
+    }
+
+    .slot-status {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .slot-available {
+        background: #e8fce8;
+        color: #27ae60;
+    }
+
+    .slot-scheduled {
+        background: #fff3e0;
+        color: #f39c12;
+    }
+
+    .patient-name {
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    .book-btn {
+        background: none;
+        border: none;
+        color: #1a56db;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+        .book-btn:hover {
+            text-decoration: underline;
+        }
+
+    .today-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
+    .today-header {
+        padding: 18px 20px;
+        background: #1a56db;
+        color: white;
+    }
+
+        .today-header h3 {
+            font-size: 16px;
+        }
+
+    .today-list {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .today-item {
+        padding: 12px 20px;
+        border-bottom: 1px solid #e8f0fe;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .today-time {
+        font-weight: 600;
+        color: #1a56db;
+        font-size: 13px;
+    }
+
+    .today-patient {
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 13px;
+    }
+
+    .today-doctor {
+        font-size: 11px;
+        color: #6c757d;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        background: white;
+        border-radius: 12px;
+        width: 400px;
+        max-width: 90%;
+        overflow: hidden;
+    }
+
+    .modal-header {
+        padding: 18px 20px;
+        background: #1a56db;
+        color: white;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        padding: 15px 20px;
+        border-top: 1px solid #e8f0fe;
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .modal-btn {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .modal-btn-confirm {
+        background: #1a56db;
+        color: white;
+    }
+
+    .modal-btn-cancel {
+        background: #e8f0fe;
+        color: #2d3748;
+    }
+</style>
+
+<div class="top-bar">
+    <div class="welcome-text">
+        <h1>Appointment Calendar</h1>
+        <p>Manage doctor schedules and patient appointments</p>
+    </div>
+    <div class="date-time" id="dateTime"></div>
+</div>
+
+<div class="calendar-container">
+    <div class="left-panel">
+        <div class="calendar-header">
+            <h3><i class="fas fa-calendar-alt"></i> Today's Schedule</h3>
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="previousWeek()"><i class="fas fa-chevron-left"></i> Previous</button>
+                <button class="nav-btn" onclick="nextWeek()">Next <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <table class="schedule-table" id="scheduleTable">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Patient</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="scheduleBody">
+            </tbody>
+        </table>
+    </div>
+    <div class="right-panel">
+                <div class="doctor-card">
+                    <p style="font-size:11px; color:#6c757d; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">Select Doctor</p>
+                    <div style="position:relative; margin-bottom:16px;">
+                        <select id="doctorDropdown" onchange="onDoctorChange(this.value)"
+                                style="width:100%; padding:10px 36px 10px 12px; border:1px solid #ddd; border-radius:8px; font-size:14px; appearance:none; cursor:pointer;">
+                            <option value="">-- Select Doctor --</option>
+                            @foreach (var doc in Model.Doctors)
+                            {
+                                <option value="@doc.DoctorId">@doc.Name</option>
+                            }
+                        </select>
+                        <i class="fas fa-chevron-down" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#6c757d; pointer-events:none;"></i>
+                    </div>
+
+                    <div id="doctorPlaceholder" style="text-align:center; padding:20px 0; color:#6c757d; font-size:13px;">
+                        <i class="fas fa-user-md" style="font-size:28px; display:block; margin-bottom:8px; opacity:0.3;"></i>
+                        Select a doctor to view schedule
+                    </div>
+
+                    <div id="doctorInfo" style="display:none;">
+                        <div class="doctor-avatar">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h3 id="docName"></h3>
+                        <p id="docSpec"></p>
+                        <div class="schedule-time">
+                            <i class="fas fa-clock"></i> 08:00 AM - 05:00 PM (20 min slots)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalSlots">27</div>
+                        <div class="stat-label">Total Slots</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="bookedSlots">0</div>
+                        <div class="stat-label">Booked</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="availableSlots">27</div>
+                        <div class="stat-label">Available</div>
+                    </div>
+                </div>
+
+                <div class="today-card">
+                    <div class="today-header">
+                        <h3><i class="fas fa-list"></i> Today's Appointments</h3>
+                    </div>
+                    <div class="today-list" id="todayList">
+                        <div style="padding: 20px; text-align: center; color: #6c757d;">Select a doctor to view appointments</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Modal -->
+        <div class="modal" id="bookingModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-calendar-plus"></i> Book Appointment</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Time Slot</label>
+                        <input type="text" id="modalTime" readonly style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Patient Name</label>
+                        <select id="modalPatient" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                            <option value="">-- Select Patient --</option>
+                            @if (Model.Patients != null && Model.Patients.Any())
+                            {
+                                @foreach (var patient in Model.Patients)
+                                {
+                                    <option value="@patient.PatientId">@patient.Name (ID: @patient.PatientId, Age: @patient.Age)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Priority</label>
+                        <select id="modalPriority" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                            <option>Normal</option>
+                            <option>Emergency</option>
+                            <option>Routine</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button class="modal-btn modal-btn-confirm" onclick="confirmBooking()">Confirm</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let currentDoctorId = null;
+            let appointmentsData = {};
+            let doctorList = @Html.Raw(Json.Serialize(Model.Doctors));
+            let patientsList = @Html.Raw(Json.Serialize(Model.Patients));
+
+            function generateTimeSlots() {
+                const slots = [];
+                let hour = 8;
+                let minute = 0;
+                let period = "AM";
+
+                for (let i = 0; i < 27; i++) {
+                    let displayHour = hour;
+                    let displayMinute = minute.toString().padStart(2, '0');
+
+                    if (hour > 12) {
+                        displayHour = hour - 12;
+                        period = "PM";
+                    } else if (hour === 12) {
+                        period = "PM";
+                    } else {
+                        period = "AM";
+                    }
+
+                    const time = `${displayHour}:${displayMinute} ${period}`;
+                    slots.push(time);
+
+                    minute += 20;
+                    if (minute >= 60) {
+                        minute = 0;
+                        hour++;
+                    }
+                }
+                return slots;
+            }
+
+            const timeSlots = generateTimeSlots();
+            let selectedSlot = '';
+
+            function renderSchedule() {
+                const tbody = document.getElementById('scheduleBody');
+                tbody.innerHTML = '';
+
+                let bookedCount = 0;
+                let todayAppointments = [];
+
+                timeSlots.forEach(slot => {
+                    const appointment = appointmentsData[slot] || { booked: false, patient: "", patientName: "", priority: "" };
+                    if (appointment.booked) bookedCount++;
+
+                    const row = tbody.insertRow();
+                    row.insertCell(0).innerHTML = `<span class="time-slot">${slot}</span>`;
+
+                    const statusClass = appointment.booked ? 'slot-scheduled' : 'slot-available';
+                    const statusText = appointment.booked ? 'Booked' : 'Available';
+                    row.insertCell(1).innerHTML = `<span class="slot-status ${statusClass}">${statusText}</span>`;
+
+                    if (appointment.booked) {
+                        const displayPatient = appointment.patientName || appointment.patient || "Unknown";
+                        row.insertCell(2).innerHTML = `<div class="patient-name">${displayPatient}</div><div style="font-size:11px;color:#6c757d;">${appointment.priority || 'Normal'}</div>`;
+                    } else {
+                        row.insertCell(2).innerHTML = '<span style="color:#6c757d;">—</span>';
+                    }
+
+                    if (!appointment.booked && currentDoctorId) {
+                        row.insertCell(3).innerHTML = `<button class="book-btn" onclick="openBookingModal('${slot}')">Book</button>`;
+                    } else if (appointment.booked) {
+                        row.insertCell(3).innerHTML = `<button class="book-btn" onclick="cancelAppointment('${slot}')" style="color:#e53e3e;">Cancel</button>`;
+                    } else {
+                        row.insertCell(3).innerHTML = '<span style="color:#6c757d;">—</span>';
+                    }
+
+                    if (appointment.booked) {
+                        const doc = doctorList.find(d => d.doctorId == currentDoctorId);
+                        todayAppointments.push({
+                            time: slot,
+                            patient: appointment.patientName || appointment.patient || "Unknown",
+                            doctor: doc ? doc.name : "Doctor"
+                        });
+                    }
+                });
+
+                const totalSlots = timeSlots.length;
+                document.getElementById('totalSlots').innerText = totalSlots;
+                document.getElementById('bookedSlots').innerText = bookedCount;
+                document.getElementById('availableSlots').innerText = totalSlots - bookedCount;
+                renderTodayAppointments(todayAppointments);
+            }
+
+            function renderTodayAppointments(appointmentsList) {
+                const container = document.getElementById('todayList');
+                if (appointmentsList.length === 0) {
+                    container.innerHTML = '<div style="padding: 20px; text-align: center; color: #6c757d;">No appointments for this doctor today</div>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                appointmentsList.forEach(app => {
+                    const item = document.createElement('div');
+                    item.className = 'today-item';
+                    item.innerHTML = `
+                        <div>
+                            <div class="today-time">${app.time}</div>
+                            <div class="today-doctor">${app.doctor}</div>
+                        </div>
+                        <div>
+                            <div class="today-patient">${app.patient}</div>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            }
+
+            function onDoctorChange(doctorId) {
+                currentDoctorId = doctorId;
+        
+                if (!doctorId) {
+                    document.getElementById('doctorPlaceholder').style.display = 'block';
+                    document.getElementById('doctorInfo').style.display = 'none';
+                    appointmentsData = {};
+                    renderSchedule();
+                    return;
+                }
+
+                const doc = doctorList.find(d => d.doctorId == doctorId);
+                if (!doc) return;
+
+                document.getElementById('doctorPlaceholder').style.display = 'none';
+                document.getElementById('doctorInfo').style.display = 'block';
+                document.getElementById('docName').innerText = doc.name;
+                document.getElementById('docSpec').innerText = doc.specialization || "General Physician";
+       fetch(`/Receptionist/Appointments?handler=DoctorSlots&doctorId=${doctorId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        appointmentsData = data;
+                        renderSchedule();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching appointments:', error);
+                        appointmentsData = {};
+                        renderSchedule();
+                    });
+            }
+
+            function openBookingModal(slot) {
+                if (!currentDoctorId) {
+                    alert('Please select a doctor first');
+                    return;
+                }
+                selectedSlot = slot;
+                document.getElementById('modalTime').value = slot;
+                document.getElementById('modalPatient').value = '';
+                document.getElementById('modalPriority').value = 'Normal';
+                document.getElementById('bookingModal').style.display = 'flex';
+            }
+
+            function closeModal() {
+                document.getElementById('bookingModal').style.display = 'none';
+            }
+
+            function confirmBooking() {
+                const patientSelect = document.getElementById('modalPatient');
+                const patientId = patientSelect.value;
+                const patientName = patientSelect.options[patientSelect.selectedIndex]?.text;
+                const priority = document.getElementById('modalPriority').value;
+
+                if (!patientId || patientId === '') {
+                    alert('❌ Please select a patient');
+                    return;
+                }
+
+                if (!currentDoctorId) {
+                    alert('❌ Please select a doctor');
+                    return;
+                }
+                fetch('/Receptionist/Appointments?handler=BookAppointment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        doctorId: currentDoctorId,
+                        patientId: parseInt(patientId),
+                        appointmentTime: selectedSlot,
+                        priority: priority,
+                        appointmentDate: new Date().toISOString().split('T')[0]
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        appointmentsData[selectedSlot] = {
+                            booked: true,
+                            patient: patientName,
+                            patientName: patientName,
+                            priority: priority
+                        };
+                        renderSchedule();
+                        closeModal();
+                        alert(`✅ Appointment booked for ${patientName} at ${selectedSlot}`);
+                    } else {
+                        alert(`❌ Failed to book appointment: ${result.message || 'Unknown error'}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error booking appointment:', error);
+                    alert('❌ Error booking appointment');
+                });
+            }
+
+            function cancelAppointment(slot) {
+                if (!currentDoctorId) {
+                    alert('Please select a doctor');
+                    return;
+                }
+
+                if (confirm(`Are you sure you want to cancel the appointment at ${slot}?`)) {
+                    fetch('/Receptionist/Appointments?handler=CancelAppointment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            doctorId: currentDoctorId,
+                            appointmentTime: slot,
+                            appointmentDate: new Date().toISOString().split('T')[0]
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            appointmentsData[slot] = { booked: false, patient: "", patientName: "", priority: "" };
+                            renderSchedule();
+                            alert(`❌ Appointment cancelled for ${slot}`);
+                        } else {
+                            alert(`❌ Failed to cancel appointment: ${result.message || 'Unknown error'}`);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error cancelling appointment:', error);
+                        alert('❌ Error cancelling appointment');
+                    });
+                }
+            }
+
+            function previousWeek() {
+                alert("Previous week functionality - Would load previous week's schedule");
+            }
+
+            function nextWeek() {
+                alert("Next week functionality - Would load next week's schedule");
+            }
+
+            function updateDateTime() {
+                const now = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('dateTime').innerHTML = now.toLocaleDateString('en-US', options);
+            }
+
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            renderSchedule();
+        </script>

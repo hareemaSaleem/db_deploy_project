@@ -1,0 +1,576 @@
+﻿@page
+@model ClinicManagementSystem.Pages.Doctor.ViewAppointmentsModel
+@{
+    Layout = "_DoctorLayout";
+    ViewData["Title"] = "View Appointments - MediCore";
+}
+
+<style>
+    .top-bar {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .welcome-text h1 {
+        font-size: 24px;
+        color: #1a56db;
+        margin-bottom: 5px;
+    }
+
+    .welcome-text p {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .date-time {
+        background: #e8f0fe;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1a56db;
+    }
+
+    .two-columns {
+        display: flex;
+        gap: 25px;
+    }
+
+    .left-column {
+        width: 380px;
+        flex-shrink: 0;
+    }
+
+    .right-column {
+        flex: 1;
+    }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .card-header {
+        padding: 18px 20px;
+        border-bottom: 1px solid #e8f0fe;
+    }
+
+        .card-header h3 {
+            font-size: 16px;
+            color: #2d3748;
+        }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .filter-section {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .filter-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .filter-group {
+        flex: 1;
+    }
+
+        .filter-group label {
+            display: block;
+            font-size: 11px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .filter-group input, .filter-group select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+    .filter-btn {
+        padding: 8px 15px;
+        background: #1a56db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+        align-self: flex-end;
+    }
+
+    .status-stats {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .stat-chip {
+        flex: 1;
+        text-align: center;
+        padding: 8px 5px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+        .stat-chip.active {
+            border: 2px solid #1a56db;
+            background: #e8f0fe;
+        }
+
+        .stat-chip.completed {
+            background: #e8fce8;
+        }
+
+        .stat-chip.cancelled {
+            background: #fee2e2;
+        }
+
+        .stat-chip.no-show {
+            background: #fff3e0;
+        }
+
+        .stat-chip.all {
+            background: #e8f0fe;
+        }
+
+        .stat-chip.scheduled {
+            background: #e0f0ff;
+        }
+
+    .stat-number {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .stat-label {
+        font-size: 10px;
+        color: #6c757d;
+    }
+
+    .appointments-list {
+        max-height: 550px;
+        overflow-y: auto;
+    }
+
+    .appointment-item {
+        padding: 15px;
+        border-bottom: 1px solid #e8f0fe;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+        .appointment-item:hover {
+            background: #f8f9fa;
+        }
+
+        .appointment-item.selected {
+            background: #e8f0fe;
+            border-left: 3px solid #1a56db;
+        }
+
+    .appointment-name {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 5px;
+    }
+
+    .appointment-pid {
+        font-size: 11px;
+        color: #6c757d;
+        margin-bottom: 5px;
+    }
+
+    .appointment-time {
+        font-size: 12px;
+        color: #1a56db;
+        margin-bottom: 5px;
+    }
+
+    .appointment-reason {
+        font-size: 12px;
+        color: #6c757d;
+    }
+
+    .detail-row {
+        display: flex;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e8f0fe;
+    }
+
+    .detail-label {
+        width: 130px;
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 13px;
+    }
+
+    .detail-value {
+        flex: 1;
+        color: #1a56db;
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-completed {
+        background: #e8fce8;
+        color: #27ae60;
+    }
+
+    .status-scheduled {
+        background: #e8f0fe;
+        color: #1a56db;
+    }
+
+    .status-cancelled {
+        background: #fee2e2;
+        color: #e53e3e;
+    }
+
+    .status-no-show {
+        background: #fff3e0;
+        color: #f39c12;
+    }
+
+    .doctor-info {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .doctor-avatar {
+        width: 70px;
+        height: 70px;
+        background: #1a56db;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+    }
+
+        .doctor-avatar i {
+            font-size: 32px;
+            color: white;
+        }
+
+    .doctor-info h3 {
+        font-size: 18px;
+        color: #2d3748;
+        margin-bottom: 5px;
+    }
+
+    .doctor-info p {
+        font-size: 13px;
+        color: #6c757d;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 40px;
+        color: #6c757d;
+    }
+</style>
+
+<div class="top-bar">
+    <div class="welcome-text">
+        <h1>View Appointments</h1>
+        <p>Manage and view all patient appointments</p>
+    </div>
+    <div class="date-time" id="dateTime"></div>
+</div>
+
+<div class="two-columns">
+
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-filter"></i> Filter</h3>
+            </div>
+            <div class="card-body">
+                <div class="filter-section">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label>Date</label>
+                            <input type="date" id="filterDate" onchange="filterAppointments()" />
+                        </div>
+                        <div class="filter-group">
+                            <label>Status</label>
+                            <select id="filterStatus" onchange="filterAppointments()">
+                                <option value="all">All Status</option>
+                                <option value="completed">Completed</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="cancelled">Cancelled</option>
+                                <option value="no-show">No Show</option>
+                            </select>
+                        </div>
+                        <button class="filter-btn" onclick="filterAppointments()"><i class="fas fa-search"></i> Apply</button>
+                    </div>
+                </div>
+
+                <div class="status-stats" id="statusStats"></div>
+
+                <h4 style="font-size: 13px; color: #2d3748; margin-bottom: 10px;">
+                    <i class="fas fa-list"></i> Appointments
+                </h4>
+                <div class="appointments-list" id="appointmentsList"></div>
+            </div>
+        </div>
+    </div>
+    <div class="right-column">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-file-medical"></i> Appointment Details</h3>
+            </div>
+            <div class="card-body" id="appointmentDetails">
+                <div class="no-data">
+                    <i class="fas fa-calendar-alt" style="font-size: 48px; color: #cbd5e0; margin-bottom: 15px;"></i>
+                    <p>Select an appointment from the list to view details</p>
+                </div>
+            </div>
+        </div>
+
+    <div class="card">
+        <div class="doctor-info">
+            <div class="doctor-avatar">
+                <i class="fas fa-user-md"></i>
+            </div>
+            <h3>@Model.DoctorName</h3>
+            <p>@Model.Specialization</p>
+            <p style="font-size: 12px; margin-top: 5px;">City Care Clinic</p>
+        </div>
+    </div>
+
+<script>
+    let currentSelectedAppointment = null;
+    let currentFilteredAppointments = [];
+
+    function setDefaultDate() {
+        const today = new Date().toISOString().split('T')[0];
+        if (!document.getElementById('filterDate').value) {
+            document.getElementById('filterDate').value = today;
+        }
+    }
+
+    function getStatusCounts(appointments) {
+        let counts = {
+            all: appointments.length,
+            completed: appointments.filter(a => a.status === "completed").length,
+            cancelled: appointments.filter(a => a.status === "cancelled").length,
+            "no-show": appointments.filter(a => a.status === "no-show").length,
+            scheduled: appointments.filter(a => a.status === "scheduled").length
+        };
+        return counts;
+    }
+
+    function renderStatusStats(appointments) {
+        const counts = getStatusCounts(appointments);
+        const currentStatus = document.getElementById('filterStatus').value;
+        const statsHtml = `
+            <div class="stat-chip all ${currentStatus === 'all' ? 'active' : ''}" onclick="setStatusFilter('all')">
+                <div class="stat-number">${counts.all}</div>
+                <div class="stat-label">All</div>
+            </div>
+            <div class="stat-chip completed ${currentStatus === 'completed' ? 'active' : ''}" onclick="setStatusFilter('completed')">
+                <div class="stat-number">${counts.completed}</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-chip scheduled ${currentStatus === 'scheduled' ? 'active' : ''}" onclick="setStatusFilter('scheduled')">
+                <div class="stat-number">${counts.scheduled}</div>
+                <div class="stat-label">Scheduled</div>
+            </div>
+            <div class="stat-chip cancelled ${currentStatus === 'cancelled' ? 'active' : ''}" onclick="setStatusFilter('cancelled')">
+                <div class="stat-number">${counts.cancelled}</div>
+                <div class="stat-label">Cancelled</div>
+            </div>
+            <div class="stat-chip no-show ${currentStatus === 'no-show' ? 'active' : ''}" onclick="setStatusFilter('no-show')">
+                <div class="stat-number">${counts["no-show"]}</div>
+                <div class="stat-label">No Show</div>
+            </div>
+        `;
+        document.getElementById('statusStats').innerHTML = statsHtml;
+    }
+
+    function setStatusFilter(status) {
+        document.getElementById('filterStatus').value = status;
+        filterAppointments();
+    }
+
+    function filterAppointments() {
+        const filterDate = document.getElementById('filterDate').value;
+        const filterStatus = document.getElementById('filterStatus').value;
+
+        if (!filterDate) return;
+
+        fetch(`/Doctor/ViewAppointments?handler=FilteredAppointments&date=${filterDate}&status=${filterStatus}`)
+            .then(response => response.json())
+            .then(data => {
+                currentFilteredAppointments = data;
+                renderStatusStats(data);
+                renderAppointmentsList(data);
+                if (data.length > 0) {
+                    selectAppointment(data[0].id);
+                } else {
+                    showNoAppointmentSelected();
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching appointments:', error);
+                currentFilteredAppointments = [];
+                renderAppointmentsList([]);
+                showNoAppointmentSelected();
+            });
+    }
+
+    function renderAppointmentsList(appointments) {
+        const container = document.getElementById('appointmentsList');
+        if (appointments.length === 0) {
+            container.innerHTML = '<div class="no-data">No appointments found for this date and status</div>';
+            return;
+        }
+        let html = '';
+        appointments.forEach(app => {
+            const statusClass = app.status === 'completed' ? 'status-completed' :
+                               (app.status === 'cancelled' ? 'status-cancelled' :
+                               (app.status === 'no-show' ? 'status-no-show' : 'status-scheduled'));
+            const statusText = app.status === 'completed' ? 'Completed' :
+                              (app.status === 'cancelled' ? 'Cancelled' :
+                              (app.status === 'no-show' ? 'No Show' : 'Scheduled'));
+            const selectedClass = (currentSelectedAppointment && currentSelectedAppointment.id === app.id) ? 'selected' : '';
+            html += `
+                <div class="appointment-item ${selectedClass}" onclick="selectAppointment(${app.id})">
+                    <div class="appointment-name">${escapeHtml(app.patientName)}</div>
+                    <div class="appointment-pid">PID: ${app.patientId}</div>
+                    <div class="appointment-time"><i class="fas fa-clock"></i> ${app.time}</div>
+                    <div class="appointment-reason">${escapeHtml(app.reason)}</div>
+                    <div style="margin-top: 8px;"><span class="status-badge ${statusClass}">${statusText}</span></div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function selectAppointment(appointmentId) {
+        const appointment = currentFilteredAppointments.find(a => a.id === appointmentId);
+        if (!appointment) return;
+        
+        currentSelectedAppointment = appointment;
+        const items = document.querySelectorAll('.appointment-item');
+        items.forEach(item => {
+            item.classList.remove('selected');
+        });
+        const selectedItem = Array.from(items).find(item =>
+            item.textContent.includes(appointment.patientName) &&
+            item.textContent.includes(appointment.patientId)
+        );
+        if (selectedItem) selectedItem.classList.add('selected');
+        
+        const statusClass = appointment.status === 'completed' ? 'status-completed' :
+                           (appointment.status === 'cancelled' ? 'status-cancelled' :
+                           (appointment.status === 'no-show' ? 'status-no-show' : 'status-scheduled'));
+        const statusText = appointment.status === 'completed' ? 'Completed' :
+                          (appointment.status === 'cancelled' ? 'Cancelled' :
+                          (appointment.status === 'no-show' ? 'No Show' : 'Scheduled'));
+        
+        const formattedDate = new Date(appointment.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        
+        const detailsHtml = `
+            <div class="detail-row">
+                <div class="detail-label">Patient Name:</div>
+                <div class="detail-value">${escapeHtml(appointment.patientName)}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Patient ID:</div>
+                <div class="detail-value">${appointment.patientId}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Age / Gender:</div>
+                <div class="detail-value">${appointment.age} / ${appointment.gender}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Contact Number:</div>
+                <div class="detail-value">${appointment.contact}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Appointment Date:</div>
+                <div class="detail-value">${formattedDate}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Appointment Time:</div>
+                <div class="detail-value">${appointment.time}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Duration:</div>
+                <div class="detail-value">${appointment.duration}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Reason:</div>
+                <div class="detail-value">${escapeHtml(appointment.reason)}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Priority:</div>
+                <div class="detail-value">${appointment.priority || 'Normal'}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Status:</div>
+                <div class="detail-value"><span class="status-badge ${statusClass}">${statusText}</span></div>
+            </div>
+        `;
+        document.getElementById('appointmentDetails').innerHTML = detailsHtml;
+    }
+
+    function showNoAppointmentSelected() {
+        document.getElementById('appointmentDetails').innerHTML = `
+            <div class="no-data">
+                <i class="fas fa-calendar-alt" style="font-size: 48px; color: #cbd5e0; margin-bottom: 15px;"></i>
+                <p>Select an appointment from the list to view details</p>
+            </div>
+        `;
+        currentSelectedAppointment = null;
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function updateDateTime() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('dateTime').innerHTML = now.toLocaleDateString('en-US', options);
+    }
+    setDefaultDate();
+    filterAppointments();
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+</script>

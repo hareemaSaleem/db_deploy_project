@@ -1,0 +1,618 @@
+﻿@page
+@model ClinicManagementSystem.Pages.ClinicOwner.ClinicOwnerDashboardModel
+@{
+    Layout = "_ClinicOwnerLayout";
+    ViewData["Title"] = "Admin Dashboard - MediCore";
+}
+
+<style>
+    .top-bar {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .welcome-text h1 {
+        font-size: 24px;
+        color: #1a56db;
+        margin-bottom: 5px;
+    }
+
+    .welcome-text p {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .date-time {
+        background: #e8f0fe;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1a56db;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .stat-number {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1a56db;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        color: #6c757d;
+        font-size: 13px;
+    }
+
+    .stat-sub {
+        font-size: 12px;
+        color: #27ae60;
+        margin-top: 5px;
+    }
+
+    .two-columns {
+        display: flex;
+        gap: 25px;
+        margin-bottom: 25px;
+    }
+
+    .left-column {
+        flex: 2;
+    }
+
+    .right-column {
+        flex: 1;
+    }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .card-header {
+        padding: 18px 20px;
+        border-bottom: 1px solid #e8f0fe;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-header h3 {
+        font-size: 16px;
+        color: #2d3748;
+    }
+
+    .card-header a {
+        color: #1a56db;
+        text-decoration: none;
+        font-size: 13px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .summary-boxes {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .summary-box {
+        flex: 1;
+        text-align: center;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .summary-box h4 {
+        font-size: 13px;
+        color: #6c757d;
+        margin-bottom: 8px;
+    }
+
+    .summary-box .amount {
+        font-size: 20px;
+        font-weight: bold;
+        color: #1a56db;
+    }
+
+    .chart-container {
+        margin-bottom: 20px;
+    }
+
+    canvas {
+        max-height: 200px;
+        width: 100%;
+    }
+
+    .chart-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        font-size: 11px;
+        color: #6c757d;
+    }
+
+    .payment-stats-row {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .payment-stat {
+        flex: 1;
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .payment-stat .label {
+        font-size: 12px;
+        color: #6c757d;
+    }
+
+    .payment-stat .value {
+        font-size: 18px;
+        font-weight: bold;
+        color: #1a56db;
+    }
+
+    .payment-stat .percentage {
+        font-size: 11px;
+        color: #27ae60;
+    }
+
+    .pending-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .pending-table th {
+        text-align: left;
+        padding: 12px 10px;
+        background: #f8f9fa;
+        font-size: 12px;
+        color: #6c757d;
+        font-weight: 600;
+        border-bottom: 1px solid #e8f0fe;
+    }
+
+    .pending-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #e8f0fe;
+        font-size: 13px;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .status-pending {
+        background: #fff3e0;
+        color: #f39c12;
+    }
+
+    .status-overdue {
+        background: #fee2e2;
+        color: #e53e3e;
+    }
+
+    .btn-pay {
+        background: #1a56db;
+        color: white;
+        border: none;
+        padding: 5px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 11px;
+    }
+
+    .view-link {
+        text-align: center;
+        padding: 12px;
+        border-top: 1px solid #e8f0fe;
+    }
+
+    .recent-list {
+        list-style: none;
+    }
+
+    .recent-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #e8f0fe;
+    }
+
+    .recent-avatar {
+        width: 40px;
+        height: 40px;
+        background: #e8f0fe;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .recent-avatar i {
+        color: #1a56db;
+        font-size: 18px;
+    }
+
+    .recent-info {
+        flex: 1;
+    }
+
+    .recent-name {
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 13px;
+    }
+
+    .recent-role {
+        font-size: 11px;
+        color: #6c757d;
+    }
+
+    .recent-date {
+        font-size: 11px;
+        color: #1a56db;
+    }
+
+    .quick-actions {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
+    .quick-actions-header {
+        padding: 15px 20px;
+        background: #1a56db;
+        color: white;
+    }
+
+    .quick-actions-header h3 {
+        font-size: 15px;
+    }
+
+    .actions-list {
+        padding: 15px;
+    }
+
+    .action-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .action-item:hover {
+        background: #e8f0fe;
+        transform: translateX(5px);
+    }
+
+    .action-icon {
+        width: 35px;
+        height: 35px;
+        background: #1a56db;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .action-icon i {
+        color: white;
+        font-size: 16px;
+    }
+
+    .action-info {
+        flex: 1;
+    }
+
+    .action-title {
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 13px;
+    }
+
+    .action-desc {
+        font-size: 11px;
+        color: #6c757d;
+    }
+</style>
+
+<div class="top-bar">
+    <div class="welcome-text">
+        <h1>Admin Dashboard</h1>
+        <p>Manage clinic operations, staff, and payments</p>
+    </div>
+    <div class="date-time" id="dateTime"></div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card" onclick="window.location.href='/ClinicOwner/RegisterDoctor'">
+        <div class="stat-number">@Model.TotalDoctorsCount</div>
+        <div class="stat-label">Total Doctors</div>
+        <div class="stat-sub">@Model.ActiveDoctorsCount Active</div>
+    </div>
+    <div class="stat-card" onclick="window.location.href='/ClinicOwner/RegisterStaff'">
+        <div class="stat-number">@Model.TotalStaffCount</div>
+        <div class="stat-label">Total Staff</div>
+        <div class="stat-sub">@Model.ActiveStaffCount Active</div>
+    </div>
+    <div class="stat-card" onclick="window.location.href='/ClinicOwner/Payments'">
+        <div class="stat-number">Rs. @Model.TotalPaymentsThisMonth.ToString("N0")</div>
+        <div class="stat-label">Total Payments (This Month)</div>
+    </div>
+    <div class="stat-card" onclick="window.location.href='/ClinicOwner/Payments'">
+        <div class="stat-number">@Model.PendingPaymentsCount</div>
+        <div class="stat-label">Pending Payments</div>
+        <div class="stat-sub">Total</div>
+    </div>
+</div>
+
+<div class="two-columns">
+    <div class="left-column">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-chart-pie"></i> Payments Overview</h3>
+            </div>
+            <div class="card-body">
+                <div class="summary-boxes">
+                    <div class="summary-box">
+                        <h4>Total Payable (This Month)</h4>
+                        <div class="amount">Rs. @Model.TotalPayableThisMonth.ToString("N0")</div>
+                    </div>
+                    <div class="summary-box">
+                        <h4>Paid (This Month)</h4>
+                        <div class="amount">Rs. @Model.TotalPaidThisMonth.ToString("N0")</div>
+                    </div>
+                    <div class="summary-box">
+                        <h4>Pending Amount</h4>
+                        <div class="amount">Rs. @Model.TotalPendingAmount.ToString("N0")</div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="paymentsChart"></canvas>
+                </div>
+                <div class="chart-labels">
+                    @foreach (var label in Model.ChartLabels)
+                    {
+                        <span>@label</span>
+                    }
+                </div>
+                <div class="payment-stats-row">
+                    <div class="payment-stat">
+                        <div class="label">Paid Amount</div>
+                        <div class="value">Rs. @Model.TotalPaidThisMonth.ToString("N0")</div>
+                        <div class="percentage">(@Model.PaidPercentage.ToString("F1")%)</div>
+                    </div>
+                    <div class="payment-stat">
+                        <div class="label">Pending Amount</div>
+                        <div class="value">Rs. @Model.TotalPendingAmount.ToString("N0")</div>
+                        <div class="percentage">(@Model.PendingPercentage.ToString("F1")%)</div>
+                    </div>
+                    <div class="payment-stat">
+                        <div class="label">Overdue</div>
+                        <div class="value">Rs. @Model.TotalOverdueAmount.ToString("N0")</div>
+                        <div class="percentage">(@Model.OverduePercentage.ToString("F1")%)</div>
+                    </div>
+                    <div class="payment-stat">
+                        <div class="label">Total Payable</div>
+                        <div class="value">Rs. @Model.TotalPayableThisMonth.ToString("N0")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-clock"></i> Pending Payments</h3>
+                <a href="/ClinicOwner/Payments">View All Payments →</a>
+            </div>
+            <table class="pending-table">
+    <thead>
+        <tr>
+            <th>Bill No</th>
+            <th>Patient Name</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.PendingPaymentsList != null && Model.PendingPaymentsList.Any())
+        {
+            @foreach (var bill in Model.PendingPaymentsList)
+            {
+                var isOverdue = bill.BillingDate.Date < DateTime.Today.Date;
+                <tr>
+                    <td>@bill.BillNumber</td>
+                    <td>@(bill.Patient?.Name ?? "Unknown")</td>
+                    <td>Rs. @bill.TotalAmount.ToString("N0")</td>
+                    <td>@bill.BillingDate.ToString("dd MMM yyyy")</td>
+                    <td><span class="status-badge @(isOverdue ? "status-overdue" : "status-pending")">@(isOverdue ? "Overdue" : "Pending")</span></td>
+                    <td><button class="btn-pay" onclick="location.href='/ClinicOwner/Payments?billId=@bill.BillingId'">Pay Now</button></td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" style="text-align:center; padding:30px;">No pending payments</td>
+            </tr>
+        }
+    </tbody>
+</table>
+                    
+            <div class="view-link">
+                <a href="/ClinicOwner/Payments">View All Payments →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-history"></i> Recent Payments</h3>
+            </div>
+            <div class="card-body">
+                <ul class="recent-list">
+                    @if (Model.RecentPayments != null && Model.RecentPayments.Any())
+                    {
+                        @foreach (var bill in Model.RecentPayments)
+                        {
+                            <li class="recent-item">
+                                <div class="recent-avatar"><i class="fas fa-file-invoice"></i></div>
+                                <div class="recent-info">
+                                    <div class="recent-name">@(bill.Patient?.Name ?? "Unknown")</div>
+                                    <div class="recent-role">Bill: @bill.BillNumber</div>
+                                </div>
+                                <div class="recent-date">@bill.BillingDate.ToString("dd MMM yyyy")</div>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="recent-item">
+                            <div class="recent-info">No recent payments</div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <div class="quick-actions-header">
+                <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+            </div>
+            <div class="actions-list">
+                <a href="/ClinicOwner/Payments" class="action-item">
+                    <div class="action-icon"><i class="fas fa-rupee-sign"></i></div>
+                    <div class="action-info">
+                        <div class="action-title">Make Payment</div>
+                        <div class="action-desc">Pay doctor or staff</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #6c757d;"></i>
+                </a>
+                <a href="/ClinicOwner/RegisterStaff" class="action-item">
+                    <div class="action-icon"><i class="fas fa-user-plus"></i></div>
+                    <div class="action-info">
+                        <div class="action-title">Add New Staff</div>
+                        <div class="action-desc">Add doctor or staff</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #6c757d;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Chart data from Model
+    const chartLabels = @Html.Raw(Json.Serialize(Model.ChartLabels));
+    const chartData = @Html.Raw(Json.Serialize(Model.ChartData));
+
+    const ctx = document.getElementById('paymentsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Payments (Rs.)',
+                data: chartData,
+                borderColor: '#1a56db',
+                backgroundColor: 'rgba(26, 86, 219, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#1a56db',
+                pointBorderColor: 'white',
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Rs. ' + context.raw.toLocaleString();
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'Rs. ' + (value / 1000) + 'K';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    function updateDateTime() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const dateTimeElement = document.getElementById('dateTime');
+        if (dateTimeElement) {
+            dateTimeElement.innerHTML = now.toLocaleDateString('en-US', options);
+        }
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+</script>

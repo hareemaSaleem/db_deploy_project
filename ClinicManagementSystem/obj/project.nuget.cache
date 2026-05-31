@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "CaC81cAabTc=",
+  "success": true,
+  "projectFilePath": "E:\\Hareema Files\\2nd semester\\DataBase\\DB Final Project (3)\\DB Final Project\\Git\\ClinicManagementSystem\\ClinicManagementSystem\\ClinicManagementSystem.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\USER\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.26\\microsoft.entityframeworkcore.6.0.26.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\6.0.26\\microsoft.entityframeworkcore.abstractions.6.0.26.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\6.0.26\\microsoft.entityframeworkcore.analyzers.6.0.26.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.entityframeworkcore.design\\6.0.26\\microsoft.entityframeworkcore.design.6.0.26.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\6.0.26\\microsoft.entityframeworkcore.relational.6.0.26.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\6.0.26\\microsoft.entityframeworkcore.tools.6.0.26.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\mysqlconnector\\2.1.2\\mysqlconnector.2.1.2.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\6.0.2\\pomelo.entityframeworkcore.mysql.6.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

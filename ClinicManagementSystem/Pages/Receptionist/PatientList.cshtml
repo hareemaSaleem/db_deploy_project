@@ -1,0 +1,384 @@
+﻿@page
+@model ClinicManagementSystem.Pages.Receptionist.PatientListModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Patients List - MediCore";
+}
+
+<style>
+    .top-bar {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .welcome-text h1 {
+        font-size: 24px;
+        color: #1a56db;
+        margin-bottom: 5px;
+    }
+
+    .welcome-text p {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .date-time {
+        background: #e8f0fe;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #1a56db;
+    }
+
+    .filters-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .filters-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+
+    .filter-group label {
+        display: block;
+        font-size: 12px;
+        color: #6c757d;
+        margin-bottom: 5px;
+    }
+
+    .filter-group select, .filter-group input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 13px;
+    }
+
+    .search-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .search-input {
+        flex: 1;
+        position: relative;
+    }
+
+        .search-input input {
+            width: 100%;
+            padding: 8px 12px 8px 35px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .search-input i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+
+    .export-btn {
+        padding: 8px 20px;
+        background: #1a56db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .table-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .table-header {
+        padding: 15px 20px;
+        border-bottom: 1px solid #e8f0fe;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .columns-btn {
+        padding: 6px 12px;
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .patients-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .patients-table th {
+            text-align: left;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 600;
+            border-bottom: 1px solid #e8f0fe;
+        }
+
+        .patients-table td {
+            padding: 12px 15px;
+            font-size: 13px;
+            border-bottom: 1px solid #e8f0fe;
+        }
+
+        .patients-table tr:hover {
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+
+    .action-dots {
+        color: #1a56db;
+        cursor: pointer;
+    }
+
+    .badge-none {
+        background: #e8fce8;
+        color: #27ae60;
+        padding: 4px 8px;
+        border-radius: 20px;
+        font-size: 11px;
+    }
+
+    .badge-asthma {
+        background: #fff3e0;
+        color: #f39c12;
+        padding: 4px 8px;
+        border-radius: 20px;
+        font-size: 11px;
+    }
+
+    .badge-diabetes {
+        background: #fee2e2;
+        color: #e53e3e;
+        padding: 4px 8px;
+        border-radius: 20px;
+        font-size: 11px;
+    }
+
+    .success-message {
+        background: #c6f6d5;
+        color: #276749;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #27ae60;
+    }
+
+    .pagination {
+        padding: 15px 20px;
+        text-align: center;
+        border-top: 1px solid #e8f0fe;
+        color: #6c757d;
+        font-size: 13px;
+    }
+</style>
+
+<div class="top-bar">
+    <div class="welcome-text">
+        <h1>Patients List</h1>
+        <p>View and manage all registered patients.</p>
+    </div>
+    <div class="date-time" id="dateTime"></div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="success-message">
+        ✅ @TempData["SuccessMessage"]
+    </div>
+}
+
+<div class="filters-card">
+    <div class="filters-row">
+        <div class="filter-group">
+            <label>Gender</label>
+            <select id="filterGender" onchange="filterPatients()">
+                <option value="All">All</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Marital Status</label>
+            <select id="filterMaritalStatus" onchange="filterPatients()">
+                <option value="All">All</option>
+                <option value="Married">Married</option>
+                <option value="Single">Single</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Chronic Disease</label>
+            <select id="filterChronicDisease" onchange="filterPatients()">
+                <option value="All">All</option>
+                <option value="Diabetes">Diabetes</option>
+                <option value="Asthma">Asthma</option>
+                <option value="Hypertension">Hypertension</option>
+                <option value="None">None</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>&nbsp;</label>
+            <div class="search-row">
+                <div class="search-input">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search by name, CNIC or phone" onkeyup="filterPatients()" />
+                </div>
+                <button class="export-btn" onclick="exportToExcel()">Export</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-card">
+    <div class="table-header">
+        <span>Patients List</span>
+        <button class="columns-btn" onclick="toggleColumns()"><i class="fas fa-columns"></i> Columns</button>
+    </div>
+    <table class="patients-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Patient Name</th>
+                <th>CNIC / ID Number</th>
+                <th>Phone Number</th>
+                <th>Age / Gender</th>
+                <th>Marital Status</th>
+                <th>Chronic Disease</th>
+                <th>Registered On</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="patientsTableBody">
+            @if (Model.Patients != null && Model.Patients.Count > 0)
+            {
+                int count = 0;
+                foreach (var patient in Model.Patients)
+                {
+                    count++;
+                    <tr onclick="window.location.href='/Receptionist/PatientDetail?id=@patient.PatientId'">
+                        <td>@count</td>
+                        <td><strong>@patient.Name</strong></td>
+                        <td>@patient.CNIC</td>
+                        <td>@patient.Phone</td>
+                        <td>@patient.Age / @patient.Gender</td>
+                        <td>@patient.MaritalStatus</td>
+                        <td>
+                            @if (string.IsNullOrEmpty(patient.ChronicDiseases))
+                            {
+                                <span class="badge-none">None</span>
+                            }
+                            else if (patient.ChronicDiseases.Contains("Diabetes"))
+                            {
+                                <span class="badge-diabetes">Diabetes</span>
+                            }
+                            else if (patient.ChronicDiseases.Contains("Asthma"))
+                            {
+                                <span class="badge-asthma">Asthma</span>
+                            }
+                            else
+                            {
+                                <span class="badge-none">@patient.ChronicDiseases</span>
+                            }
+                        </td>
+                        <td>@patient.CreatedAt.ToString("dd MMM yyyy")</td>
+                        <td><i class="fas fa-ellipsis-v action-dots"></i></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="9" style="text-align: center; padding: 40px;">
+                        No patients found. Please register a patient first.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="pagination">
+        Showing @(Model.Patients != null ? Model.Patients.Count : 0) patients
+    </div>
+</div>
+
+<script>
+    function filterPatients() {
+        const gender = document.getElementById('filterGender').value;
+        const maritalStatus = document.getElementById('filterMaritalStatus').value;
+        const chronicDisease = document.getElementById('filterChronicDisease').value;
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        
+        const rows = document.querySelectorAll('#patientsTableBody tr');
+        let visibleCount = 0;
+        
+        rows.forEach(row => {
+            let show = true;
+            
+            const name = row.cells[1]?.innerText.toLowerCase() || '';
+            const cnic = row.cells[2]?.innerText || '';
+            const phone = row.cells[3]?.innerText || '';
+            const rowGender = row.cells[4]?.innerText.split('/')[1]?.trim() || '';
+            const rowMaritalStatus = row.cells[5]?.innerText || '';
+            const diseaseSpan = row.cells[6]?.querySelector('span');
+            const rowDisease = diseaseSpan ? diseaseSpan.innerText : '';
+            
+            if (gender !== 'All' && rowGender !== gender) show = false;
+            if (maritalStatus !== 'All' && rowMaritalStatus !== maritalStatus) show = false;
+            if (chronicDisease !== 'All') {
+                if (chronicDisease === 'None') {
+                    if (rowDisease !== 'None') show = false;
+                } else {
+                    if (rowDisease !== chronicDisease) show = false;
+                }
+            }
+            if (searchTerm && !name.includes(searchTerm) && !cnic.includes(searchTerm) && !phone.includes(searchTerm)) {
+                show = false;
+            }
+            
+            row.style.display = show ? '' : 'none';
+            if (show) visibleCount++;
+        });
+        
+        document.querySelector('.pagination').innerHTML = `Showing ${visibleCount} patients`;
+    }
+    
+    function toggleColumns() {
+        alert("Column visibility feature - Select which columns to show/hide");
+    }
+    
+    function exportToExcel() {
+        alert("Export to Excel feature - Would export current patient list");
+    }
+    
+    function updateDateTime() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('dateTime').innerHTML = now.toLocaleDateString('en-US', options);
+    }
+    
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+</script>
